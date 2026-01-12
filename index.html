@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>黑色主题2048遊戲 - 特殊方塊版</title>
+    <title>黑色主题2048遊戲 - 經典版</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,7 @@
         }
         
         .container {
-            max-width: 550px;
+            max-width: 500px;
             width: 100%;
             margin: 0 auto;
         }
@@ -45,8 +45,6 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
-            gap: 15px;
-            flex-wrap: wrap;
         }
         
         .score-container {
@@ -55,15 +53,6 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            flex: 1;
-        }
-        
-        .special-info {
-            background-color: #1e1e1e;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            flex: 1;
         }
         
         .score-title {
@@ -78,41 +67,6 @@
             color: #ffcc00;
         }
         
-        .special-title {
-            font-size: 1rem;
-            color: #aaa;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .special-types {
-            display: flex;
-            justify-content: space-around;
-            font-size: 0.85rem;
-        }
-        
-        .special-type {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-        }
-        
-        .special-icon {
-            width: 25px;
-            height: 25px;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .obstacle-icon { background-color: #555; color: white; }
-        .bomb-icon { background-color: #ff4444; color: white; }
-        .multiplier-icon { background-color: #44ff44; color: #000; }
-        
         .restart-btn {
             background-color: #4a00e0;
             color: white;
@@ -124,8 +78,6 @@
             transition: all 0.3s;
             font-weight: bold;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            flex: 1;
-            max-width: 150px;
         }
         
         .restart-btn:hover {
@@ -209,25 +161,6 @@
         .tile-1024 { background-color: #e67e22; color: #ecf0f1; font-size: 1.4rem; box-shadow: 0 0 15px rgba(230, 126, 34, 0.5); }
         .tile-2048 { background-color: #e74c3c; color: #ecf0f1; font-size: 1.4rem; box-shadow: 0 0 20px rgba(231, 76, 60, 0.7); }
         
-        /* 特殊方塊樣式 */
-        .tile-obstacle { 
-            background-color: #555 !important; 
-            color: #fff !important;
-            font-size: 1.4rem !important;
-        }
-        .tile-bomb { 
-            background-color: #ff4444 !important; 
-            color: #fff !important;
-            font-size: 1.4rem !important;
-            box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
-        }
-        .tile-multiplier { 
-            background-color: #44ff44 !important; 
-            color: #000 !important;
-            font-size: 1.4rem !important;
-            box-shadow: 0 0 10px rgba(68, 255, 68, 0.5);
-        }
-        
         .game-message {
             display: none;
             position: absolute;
@@ -300,6 +233,7 @@
             
             .game-info {
                 flex-direction: column;
+                gap: 15px;
                 align-items: center;
             }
             
@@ -314,18 +248,14 @@
             .tile-1024, .tile-2048 {
                 font-size: 1.1rem;
             }
-            
-            .tile-obstacle, .tile-bomb, .tile-multiplier {
-                font-size: 1.1rem !important;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>2048+</h1>
-            <p class="instructions">使用方向鍵移動方塊。相同數字方塊合併。新增特殊方塊：<span style="color:#aaa">障礙方塊(石)</span> 無法移動，<span style="color:#ff4444">炸彈方塊(炸)</span> 消除周圍方塊，<span style="color:#44ff44">加倍方塊(倍)</span> 分數加倍！</p>
+            <h1>2048</h1>
+            <p class="instructions">使用方向鍵移動方塊。當兩個相同數值的方塊碰撞時，它們會合併成一個方塊。目標是創建一個數值為2048的方塊！</p>
         </header>
         
         <div class="game-info">
@@ -333,25 +263,6 @@
                 <div class="score-title">分數</div>
                 <div class="score">0</div>
             </div>
-            
-            <div class="special-info">
-                <div class="special-title">特殊方塊</div>
-                <div class="special-types">
-                    <div class="special-type">
-                        <div class="special-icon obstacle-icon">石</div>
-                        <div>障礙</div>
-                    </div>
-                    <div class="special-type">
-                        <div class="special-icon bomb-icon">炸</div>
-                        <div>炸彈</div>
-                    </div>
-                    <div class="special-type">
-                        <div class="special-icon multiplier-icon">倍</div>
-                        <div>加倍</div>
-                    </div>
-                </div>
-            </div>
-            
             <button class="restart-btn" id="restart-button">重新開始</button>
         </div>
         
@@ -396,7 +307,7 @@
         </div>
         
         <footer>
-            <p>使用方向鍵或WASD移動方塊 | 2048遊戲 - 特殊方塊版</p>
+            <p>使用方向鍵或WASD移動方塊 | 黑色主題2048遊戲</p>
         </footer>
     </div>
 
@@ -405,17 +316,6 @@
             // 遊戲常量
             const GRID_SIZE = 4;
             const CELL_COUNT = GRID_SIZE * GRID_SIZE;
-            
-            // 特殊方塊定義
-            const TILE_TYPES = {
-                EMPTY: 0,
-                OBSTACLE: -1,    // 障礙方塊（無法移動與合併）
-                BOMB: -2,        // 炸彈方塊（合併時消除周圍方塊）
-                MULTIPLIER: -3   // 加倍方塊（合併時分數加倍）
-            };
-            
-            // 特殊方塊出現機率（初始5%，隨分數增加）
-            let specialTileChance = 0.05;
             
             // 遊戲狀態變數
             let grid = [];
@@ -436,11 +336,12 @@
             function getTilePosition(index) {
                 const gridRect = gridContainer.getBoundingClientRect();
                 const cellSize = gridRect.width / GRID_SIZE;
-                const gap = 10;
+                const gap = 10; // 網格間距
                 
                 const row = Math.floor(index / GRID_SIZE);
                 const col = index % GRID_SIZE;
                 
+                // 計算實際像素位置
                 const left = col * cellSize + gap / 2;
                 const top = row * cellSize + gap / 2;
                 const size = cellSize - gap;
@@ -456,13 +357,12 @@
             // 初始化遊戲
             function initGame() {
                 // 初始化網格
-                grid = Array(CELL_COUNT).fill(TILE_TYPES.EMPTY);
+                grid = Array(CELL_COUNT).fill(0);
                 
                 // 重置遊戲狀態
                 score = 0;
                 gameOver = false;
                 won = false;
-                specialTileChance = 0.05;
                 
                 // 更新分數顯示
                 updateScore();
@@ -473,7 +373,7 @@
                 // 清除所有現有的方塊
                 tileContainer.innerHTML = '';
                 
-                // 添加兩個初始方塊（普通數字方塊）
+                // 添加兩個初始方塊
                 addRandomTile();
                 addRandomTile();
                 
@@ -486,7 +386,7 @@
                 // 獲取所有空位置
                 const emptyCells = [];
                 grid.forEach((cell, index) => {
-                    if (cell === TILE_TYPES.EMPTY) {
+                    if (cell === 0) {
                         emptyCells.push(index);
                     }
                 });
@@ -498,22 +398,11 @@
                 const randomIndex = Math.floor(Math.random() * emptyCells.length);
                 const cellIndex = emptyCells[randomIndex];
                 
-                // 根據分數增加特殊方塊出現機率（最高25%）
-                const currentSpecialChance = Math.min(0.25, specialTileChance + Math.floor(score / 1000) * 0.02);
+                // 90%的機率添加2，10%的機率添加4
+                const value = Math.random() < 0.9 ? 2 : 4;
                 
-                // 決定生成什麼類型的方塊
-                const rand = Math.random();
-                
-                if (rand < currentSpecialChance && score > 100) { // 分數超過100才出現特殊方塊
-                    // 生成特殊方塊
-                    const specialTypes = [TILE_TYPES.OBSTACLE, TILE_TYPES.BOMB, TILE_TYPES.MULTIPLIER];
-                    const specialType = specialTypes[Math.floor(Math.random() * specialTypes.length)];
-                    grid[cellIndex] = specialType;
-                } else {
-                    // 90%的機率添加2，10%的機率添加4
-                    const value = Math.random() < 0.9 ? 2 : 4;
-                    grid[cellIndex] = value;
-                }
+                // 在網格中設置值
+                grid[cellIndex] = value;
             }
             
             // 渲染所有方塊
@@ -521,9 +410,9 @@
                 // 首先清除所有現有的方塊
                 tileContainer.innerHTML = '';
                 
-                // 為網格中每個非空值創建方塊
+                // 為網格中每個非零值創建方塊
                 grid.forEach((value, index) => {
-                    if (value !== TILE_TYPES.EMPTY) {
+                    if (value !== 0) {
                         createTile(index, value);
                     }
                 });
@@ -532,23 +421,8 @@
             // 創建一個方塊元素
             function createTile(index, value) {
                 const tile = document.createElement('div');
-                tile.classList.add('tile');
-                
-                // 根據值設置不同的樣式和內容
-                if (value === TILE_TYPES.OBSTACLE) {
-                    tile.classList.add('tile-obstacle');
-                    tile.textContent = '石';
-                } else if (value === TILE_TYPES.BOMB) {
-                    tile.classList.add('tile-bomb');
-                    tile.textContent = '炸';
-                } else if (value === TILE_TYPES.MULTIPLIER) {
-                    tile.classList.add('tile-multiplier');
-                    tile.textContent = '倍';
-                } else {
-                    // 普通數字方塊
-                    tile.classList.add(`tile-${value}`);
-                    tile.textContent = value;
-                }
+                tile.classList.add('tile', `tile-${value}`);
+                tile.textContent = value;
                 
                 // 計算位置和大小
                 const position = getTilePosition(index);
@@ -572,7 +446,7 @@
             function move(direction) {
                 if (gameOver) return;
                 
-                // 保存移動前的網格狀態
+                // 保存移動前的網格狀態，用於檢測是否有變化
                 const previousGrid = [...grid];
                 
                 // 根據方向處理移動
@@ -598,7 +472,6 @@
                 if (gridChanged) {
                     addRandomTile();
                     renderTiles();
-                    updateScore();
                     checkGameState();
                 }
             }
@@ -683,97 +556,38 @@
                 }
             }
             
-            // 簡化的合併邏輯
+            // 合併一行或一列（經典2048邏輯）
             function mergeLine(line) {
-                // 先處理障礙方塊 - 保持原位
-                const result = [];
-                let lastTile = null;
+                // 移除零值
+                let filteredLine = line.filter(val => val !== 0);
                 
-                // 從前往後處理，跳過障礙方塊
-                for (let i = 0; i < line.length; i++) {
-                    const current = line[i];
-                    
-                    // 如果是障礙方塊，直接放回原位
-                    if (current === TILE_TYPES.OBSTACLE) {
-                        result.push(current);
-                        lastTile = null; // 障礙方塊阻斷合併
-                        continue;
-                    }
-                    
-                    // 如果是空位置，跳過
-                    if (current === TILE_TYPES.EMPTY) {
-                        continue;
-                    }
-                    
-                    // 處理炸彈方塊
-                    if (current === TILE_TYPES.BOMB) {
-                        // 如果前一個是數字方塊，炸彈消除它
-                        if (lastTile && lastTile > 0) {
-                            score += lastTile; // 加一點分數
-                            // 移除上一個方塊
-                            result.pop();
+                // 合併相鄰的相同值
+                for (let i = 0; i < filteredLine.length - 1; i++) {
+                    if (filteredLine[i] === filteredLine[i + 1]) {
+                        filteredLine[i] *= 2;
+                        score += filteredLine[i]; // 增加分數
+                        filteredLine.splice(i + 1, 1);
+                        
+                        // 檢查是否達到2048
+                        if (filteredLine[i] === 2048 && !won) {
+                            won = true;
+                            showMessage('恭喜！你達到了2048！', false);
                         }
-                        result.push(current);
-                        lastTile = current;
-                        continue;
-                    }
-                    
-                    // 處理加倍方塊
-                    if (current === TILE_TYPES.MULTIPLIER) {
-                        // 如果前一個是數字方塊，進行加倍
-                        if (lastTile && lastTile > 0) {
-                            const doubledValue = lastTile * 2;
-                            score += doubledValue * 2; // 額外獎勵分數
-                            // 替換上一個方塊
-                            result.pop();
-                            result.push(doubledValue);
-                            
-                            // 檢查是否達到2048
-                            if (doubledValue === 2048 && !won) {
-                                won = true;
-                                showMessage('恭喜！你達到了2048！', false);
-                            }
-                        } else {
-                            result.push(current);
-                        }
-                        lastTile = null; // 加倍方塊被消耗或保留
-                        continue;
-                    }
-                    
-                    // 處理普通數字方塊
-                    if (current > 0) {
-                        // 檢查是否可以與前一個合併
-                        if (lastTile && lastTile > 0 && lastTile === current) {
-                            const mergedValue = current * 2;
-                            score += mergedValue;
-                            // 合併方塊
-                            result.pop();
-                            result.push(mergedValue);
-                            
-                            // 檢查是否達到2048
-                            if (mergedValue === 2048 && !won) {
-                                won = true;
-                                showMessage('恭喜！你達到了2048！', false);
-                            }
-                        } else {
-                            result.push(current);
-                        }
-                        lastTile = current > 0 ? current : null;
                     }
                 }
                 
-                // 填充空位置
-                while (result.length < GRID_SIZE) {
-                    result.push(TILE_TYPES.EMPTY);
+                // 用零填充剩餘位置
+                while (filteredLine.length < GRID_SIZE) {
+                    filteredLine.push(0);
                 }
                 
-                return result;
+                return filteredLine;
             }
             
             // 檢查遊戲狀態
             function checkGameState() {
                 // 檢查是否有空位置
-                const hasEmptyCell = grid.some(cell => cell === TILE_TYPES.EMPTY);
+                const hasEmptyCell = grid.some(cell => cell === 0);
                 if (hasEmptyCell) return;
                 
                 // 檢查是否還有可能的移動
@@ -783,25 +597,7 @@
                 for (let row = 0; row < GRID_SIZE; row++) {
                     for (let col = 0; col < GRID_SIZE - 1; col++) {
                         const index = row * GRID_SIZE + col;
-                        const current = grid[index];
-                        const next = grid[index + 1];
-                        
-                        // 兩個相同的數字方塊
-                        if (current > 0 && current === next) {
-                            canMove = true;
-                            break;
-                        }
-                        
-                        // 數字方塊旁邊是炸彈
-                        if ((current > 0 && next === TILE_TYPES.BOMB) ||
-                            (next > 0 && current === TILE_TYPES.BOMB)) {
-                            canMove = true;
-                            break;
-                        }
-                        
-                        // 數字方塊旁邊是加倍方塊
-                        if ((current > 0 && next === TILE_TYPES.MULTIPLIER) ||
-                            (next > 0 && current === TILE_TYPES.MULTIPLIER)) {
+                        if (grid[index] === grid[index + 1]) {
                             canMove = true;
                             break;
                         }
@@ -814,25 +610,7 @@
                     for (let col = 0; col < GRID_SIZE; col++) {
                         for (let row = 0; row < GRID_SIZE - 1; row++) {
                             const index = row * GRID_SIZE + col;
-                            const current = grid[index];
-                            const next = grid[index + GRID_SIZE];
-                            
-                            // 兩個相同的數字方塊
-                            if (current > 0 && current === next) {
-                                canMove = true;
-                                break;
-                            }
-                            
-                            // 數字方塊旁邊是炸彈
-                            if ((current > 0 && next === TILE_TYPES.BOMB) ||
-                                (next > 0 && current === TILE_TYPES.BOMB)) {
-                                canMove = true;
-                                break;
-                            }
-                            
-                            // 數字方塊旁邊是加倍方塊
-                            if ((current > 0 && next === TILE_TYPES.MULTIPLIER) ||
-                                (next > 0 && current === TILE_TYPES.MULTIPLIER)) {
+                            if (grid[index] === grid[index + GRID_SIZE]) {
                                 canMove = true;
                                 break;
                             }
