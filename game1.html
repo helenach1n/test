@@ -447,6 +447,14 @@
                 tile.classList.add('tile', `tile-${value}`);
                 tile.textContent = value;
                 
+                // 計算網格位置
+                const row = Math.floor(index / GRID_SIZE);
+                const col = index % GRID_SIZE;
+                
+                // 設置網格位置
+                tile.style.gridRow = (row + 1) + ' / span 1';
+                tile.style.gridColumn = (col + 1) + ' / span 1';
+                
                 // 添加到對應的網格位置
                 tileContainer.appendChild(tile);
             }
@@ -500,36 +508,32 @@
             
             // 向上移動
             function moveUp() {
+                console.log("向上移動");
                 for (let col = 0; col < GRID_SIZE; col++) {
-                    // 提取當前列
                     let column = [];
                     for (let row = 0; row < GRID_SIZE; row++) {
                         column.push(grid[row * GRID_SIZE + col]);
                     }
                     
-                    // 合併列
                     column = mergeLine(column);
                     
-                    // 將合併後的列放回網格
                     for (let row = 0; row < GRID_SIZE; row++) {
                         grid[row * GRID_SIZE + col] = column[row];
                     }
                 }
             }
             
-            // 向下移動
+            // 向下移動 - 修復版本
             function moveDown() {
+                console.log("向下移動");
                 for (let col = 0; col < GRID_SIZE; col++) {
-                    // 提取當前列（反轉以便從底部開始）
                     let column = [];
                     for (let row = GRID_SIZE - 1; row >= 0; row--) {
                         column.push(grid[row * GRID_SIZE + col]);
                     }
                     
-                    // 合併列
                     column = mergeLine(column);
                     
-                    // 將合併後的列放回網格（反轉回來）
                     for (let row = 0; row < GRID_SIZE; row++) {
                         grid[(GRID_SIZE - 1 - row) * GRID_SIZE + col] = column[row];
                     }
@@ -538,17 +542,15 @@
             
             // 向左移動
             function moveLeft() {
+                console.log("向左移動");
                 for (let row = 0; row < GRID_SIZE; row++) {
-                    // 提取當前行
                     let line = [];
                     for (let col = 0; col < GRID_SIZE; col++) {
                         line.push(grid[row * GRID_SIZE + col]);
                     }
                     
-                    // 合併行
                     line = mergeLine(line);
                     
-                    // 將合併後的行放回網格
                     for (let col = 0; col < GRID_SIZE; col++) {
                         grid[row * GRID_SIZE + col] = line[col];
                     }
@@ -557,32 +559,39 @@
             
             // 向右移動
             function moveRight() {
+                console.log("向右移動");
                 for (let row = 0; row < GRID_SIZE; row++) {
-                    // 提取當前行（反轉以便從右側開始）
                     let line = [];
                     for (let col = GRID_SIZE - 1; col >= 0; col--) {
                         line.push(grid[row * GRID_SIZE + col]);
                     }
                     
-                    // 合併行
                     line = mergeLine(line);
                     
-                    // 將合併後的行放回網格（反轉回來）
                     for (let col = 0; col < GRID_SIZE; col++) {
                         grid[row * GRID_SIZE + (GRID_SIZE - 1 - col)] = line[col];
                     }
                 }
             }
             
-            // 合併一行或一列
+            // 合併一行或一列 - 修復版本
             function mergeLine(line) {
+                console.log("合併前:", line);
+                
                 // 移除零值
-                let filtered = line.filter(val => val !== 0);
+                let filtered = [];
+                for (let i = 0; i < line.length; i++) {
+                    if (line[i] !== 0) {
+                        filtered.push(line[i]);
+                    }
+                }
+                
+                console.log("過濾後:", filtered);
                 
                 // 合併相鄰的相同值
                 for (let i = 0; i < filtered.length - 1; i++) {
                     if (filtered[i] === filtered[i + 1]) {
-                        filtered[i] *= 2;
+                        filtered[i] = filtered[i] * 2;
                         score += filtered[i]; // 增加分數
                         filtered.splice(i + 1, 1);
                         
@@ -594,11 +603,14 @@
                     }
                 }
                 
+                console.log("合併後:", filtered);
+                
                 // 用零填充剩餘位置
                 while (filtered.length < GRID_SIZE) {
                     filtered.push(0);
                 }
                 
+                console.log("填充後:", filtered);
                 return filtered;
             }
             
@@ -653,6 +665,7 @@
             
             // 鍵盤事件監聽
             document.addEventListener('keydown', (e) => {
+                console.log("按鍵按下:", e.key);
                 if (gameOver && !won) return;
                 
                 switch(e.key) {
