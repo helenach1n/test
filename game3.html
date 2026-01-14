@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圓圈交叉小遊戲</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        header {
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            color: #0ea5e9;
+            text-shadow: 0 0 15px rgba(14, 165, 233, 0.7);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px solid #475569;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .stat-box {
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(14, 165, 233, 0.5);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #pause-btn {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        }
+        
+        #restart-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+        }
+        
+        .game-area-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #475569;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
+        }
+        
+        #game-area {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        /* 圓圈樣式 */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: crosshair;
+            transition: transform 0.1s;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        
+        .circle:hover {
+            transform: scale(1.05);
+        }
+        
+        .circle.hit {
+            animation: circleHit 0.5s forwards;
+        }
+        
+        @keyframes circleHit {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        
+        /* 不同大小的圓圈 */
+        .circle-small {
+            width: 60px;
+            height: 60px;
+            font-size: 16px;
+        }
+        
+        .circle-medium {
+            width: 80px;
+            height: 80px;
+            font-size: 18px;
+        }
+        
+        .circle-large {
+            width: 100px;
+            height: 100px;
+            font-size: 20px;
+        }
+        
+        /* 不同類型的圓圈 */
+        .circle-normal {
+            background: radial-gradient(circle at 30% 30%, #0ea5e9, #0369a1);
+            border: 3px solid #38bdf8;
+            color: #fff;
+        }
+        
+        .circle-bonus {
+            background: radial-gradient(circle at 30% 30%, #f59e0b, #d97706);
+            border: 3px solid #fbbf24;
+            color: #fff;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(245, 158, 11, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+        }
+        
+        .circle-special {
+            background: radial-gradient(circle at 30% 30%, #8b5cf6, #7c3aed);
+            border: 3px solid #a78bfa;
+            color: #fff;
+        }
+        
+        .circle-danger {
+            background: radial-gradient(circle at 30% 30%, #ef4444, #dc2626);
+            border: 3px solid #f87171;
+            color: #fff;
+        }
+        
+        /* 準心樣式 */
+        .crosshair {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            z-index: 1000;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
+        .crosshair::before,
+        .crosshair::after {
+            content: '';
+            position: absolute;
+            background-color: #0ea5e9;
+            box-shadow: 0 0 5px #0ea5e9;
+        }
+        
+        .crosshair::before {
+            width: 24px;
+            height: 2px;
+            top: 11px;
+            left: 0;
+        }
+        
+        .crosshair::after {
+            width: 2px;
+            height: 24px;
+            top: 0;
+            left: 11px;
+        }
+        
+        /* 射擊效果 */
+        .shot-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 900;
+            opacity: 0;
+        }
+        
+        .shot-effect.active {
+            animation: shotFlash 0.1s;
+        }
+        
+        @keyframes shotFlash {
+            0% { background-color: rgba(255, 255, 255, 0.7); }
+            100% { background-color: transparent; }
+        }
+        
+        /* 交叉線效果 */
+        .cross-line {
+            position: absolute;
+            background: rgba(14, 165, 233, 0.3);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .cross-line.horizontal {
+            width: 100%;
+            height: 1px;
+            top: 50%;
+            left: 0;
+        }
+        
+        .cross-line.vertical {
+            width: 1px;
+            height: 100%;
+            top: 0;
+            left: 50%;
+        }
+        
+        /* 得分動畫 */
+        .points-animation {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 1000;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            animation: floatUp 1s forwards;
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
+        }
+        
+        /* 遊戲結束畫面 */
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            border-radius: 15px;
+        }
+        
+        .game-over h2 {
+            font-size: 4rem;
+            color: #0ea5e9;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(14, 165, 233, 0.8);
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            color: #fff;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 遊戲說明 */
+        .instructions {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #475569;
+            margin-top: 20px;
+        }
+        
+        .instructions h3 {
+            color: #0ea5e9;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .instructions ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions li {
+            background: rgba(71, 85, 105, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .circle-example {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .normal-example { background: #0ea5e9; }
+        .bonus-example { background: #f59e0b; }
+        .special-example { background: #8b5cf6; }
+        .danger-example { background: #ef4444; }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .game-area-container {
+                height: 500px;
+            }
+            
+            .game-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+            
+            .controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>圓圈交叉小遊戲</h1>
+            <div class="subtitle">瞄準射擊移動的圓圈，在時間內獲得最高分數！</div>
+        </header>
+        
+        <div class="game-info">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-label">分數</div>
+                    <div id="score" class="stat-value">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">時間</div>
+                    <div id="time" class="stat-value">60</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">命中率</div>
+                    <div id="accuracy" class="stat-value">100%</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">連擊</div>
+                    <div id="combo" class="stat-value">0</div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="start-btn">開始遊戲</button>
+                <button id="pause-btn">暫停</button>
+                <button id="restart-btn">重新開始</button>
+            </div>
+        </div>
+        
+        <div class="game-area-container">
+            <div id="game-area">
+                <!-- 交叉線 -->
+                <div class="cross-line horizontal"></div>
+                <div class="cross-line vertical"></div>
+                
+                <!-- 圓圈會在這裡生成 -->
+            </div>
+            <div class="shot-effect" id="shot-effect"></div>
+            <div class="crosshair" id="crosshair"></div>
+            
+            <!-- 遊戲結束畫面 -->
+            <div class="game-over" id="game-over">
+                <h2>遊戲結束</h2>
+                <p>最終成績</p>
+                <div class="final-score" id="final-score">0</div>
+                <button id="play-again-btn">再玩一次</button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>遊戲說明</h3>
+            <ul>
+                <li>
+                    <span class="circle-example normal-example"></span>
+                    一般圓圈：+10分
+                </li>
+                <li>
+                    <span class="circle-example bonus-example"></span>
+                    獎勵圓圈：+25分（會閃爍）
+                </li>
+                <li>
+                    <span class="circle-example special-example"></span>
+                    特殊圓圈：+50分
+                </li>
+                <li>
+                    <span class="circle-example danger-example"></span>
+                    危險圓圈：-20分（避開！）
+                </li>
+            </ul>
+            <p>使用滑鼠瞄準並點擊射擊圓圈。連續命中可獲得連擊加分！</p>
+        </div>
+    </div>
+
+    <script>
+        // 遊戲變數
+        let score = 0;
+        let timeLeft = 60;
+        let gameActive = false;
+        let gameTimer;
+        let circleTimer;
+        let shotsFired = 0;
+        let shotsHit = 0;
+        let combo = 0;
+        let maxCombo = 0;
+        let circles = [];
+        
+        // DOM元素
+        const gameArea = document.getElementById('game-area');
+        const scoreElement = document.getElementById('score');
+        const timeElement = document.getElementById('time');
+        const accuracyElement = document.getElementById('accuracy');
+        const comboElement = document.getElementById('combo');
+        const startButton = document.getElementById('start-btn');
+        const pauseButton = document.getElementById('pause-btn');
+        const restartButton = document.getElementById('restart-btn');
+        const gameOverScreen = document.getElementById('game-over');
+        const finalScoreElement = document.getElementById('final-score');
+        const playAgainButton = document.getElementById('play-again-btn');
+        const crosshair = document.getElementById('crosshair');
+        const shotEffect = document.getElementById('shot-effect');
+        
+        // 圓圈類型配置
+        const circleTypes = [
+            {
+                name: "normal",
+                points: 10,
+                sizeClass: "circle-small",
+                colorClass: "circle-normal",
+                probability: 0.5
+            },
+            {
+                name: "bonus",
+                points: 25,
+                sizeClass: "circle-medium",
+                colorClass: "circle-bonus",
+                probability: 0.2
+            },
+            {
+                name: "special",
+                points: 50,
+                sizeClass: "circle-large",
+                colorClass: "circle-special",
+                probability: 0.2
+            },
+            {
+                name: "danger",
+                points: -20,
+                sizeClass: "circle-medium",
+                colorClass: "circle-danger",
+                probability: 0.1
+            }
+        ];
+        
+        // 顯示準心
+        function showCrosshair(x, y) {
+            crosshair.style.left = x + 'px';
+            crosshair.style.top = y + 'px';
+            crosshair.style.display = 'block';
+        }
+        
+        // 隱藏準心
+        function hideCrosshair() {
+            crosshair.style.display = 'none';
+        }
+        
+        // 創建圓圈
+        function createCircle() {
+            if (!gameActive) return;
+            
+            // 隨機選擇圓圈類型
+            let random = Math.random();
+            let selectedType;
+            let cumulativeProb = 0;
+            
+            for (const type of circleTypes) {
+                cumulativeProb += type.probability;
+                if (random <= cumulativeProb) {
+                    selectedType = type;
+                    break;
+                }
+            }
+            
+            // 創建圓圈元素
+            const circle = document.createElement('div');
+            circle.className = `circle ${selectedType.sizeClass} ${selectedType.colorClass}`;
+            circle.dataset.points = selectedType.points;
+            circle.dataset.type = selectedType.name;
+            circle.textContent = selectedType.points > 0 ? `+${selectedType.points}` : selectedType.points;
+            
+            // 隨機起始位置
+            const gameRect = gameArea.getBoundingClientRect();
+            const size = parseInt(circle.style.width || getComputedStyle(circle).width);
+            const circleSize = selectedType.sizeClass === 'circle-small' ? 60 : 
+                             selectedType.sizeClass === 'circle-medium' ? 80 : 100;
+            
+            const maxX = gameRect.width - circleSize;
+            const maxY = gameRect.height - circleSize;
+            
+            const startX = Math.random() * maxX;
+            const startY = Math.random() * maxY;
+            
+            circle.style.left = startX + 'px';
+            circle.style.top = startY + 'px';
+            
+            // 隨機移動方向
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 1 + Math.random() * 2;
+            
+            circle.dx = Math.cos(angle) * speed;
+            circle.dy = Math.sin(angle) * speed;
+            
+            // 添加到遊戲區域
+            gameArea.appendChild(circle);
+            circles.push(circle);
+            
+            // 點擊事件
+            circle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                shootCircle(this, e.clientX, e.clientY);
+            });
+            
+            // 設定圓圈消失時間
+            setTimeout(() => {
+                if (circle.parentNode && gameActive) {
+                    circle.remove();
+                    const index = circles.indexOf(circle);
+                    if (index > -1) {
+                        circles.splice(index, 1);
+                        // 錯過圓圈會中斷連擊
+                        if (selectedType.name !== 'danger') {
+                            resetCombo();
+                        }
+                    }
+                }
+            }, 3000 + Math.random() * 3000);
+        }
+        
+        // 射擊圓圈
+        function shootCircle(circle, x, y) {
+            shotsFired++;
+            
+            // 顯示射擊效果
+            showShotEffect();
+            
+            // 檢查是否命中
+            const circleRect = circle.getBoundingClientRect();
+            const gameRect = gameArea.getBoundingClientRect();
+            
+            // 計算相對於遊戲區域的點擊位置
+            const relativeX = x - gameRect.left;
+            const relativeY = y - gameRect.top;
+            
+            // 檢查點擊是否在圓圈內
+            const circleX = parseFloat(circle.style.left) + parseInt(circle.style.width) / 2;
+            const circleY = parseFloat(circle.style.top) + parseInt(circle.style.height) / 2;
+            const circleRadius = parseInt(circle.style.width) / 2;
+            
+            const distance = Math.sqrt(
+                Math.pow(relativeX - circleX, 2) + 
+                Math.pow(relativeY - circleY, 2)
+            );
+            
+            if (distance <= circleRadius) {
+                shotsHit++;
+                
+                // 獲得分數
+                const points = parseInt(circle.dataset.points);
+                score += points;
+                
+                // 更新連擊
+                if (points > 0) {
+                    combo++;
+                    if (combo > maxCombo) maxCombo = combo;
+                } else {
+                    resetCombo();
+                }
+                
+                // 連擊獎勵
+                if (combo >= 5) {
+                    score += Math.floor(combo / 5) * 10;
+                }
+                
+                // 顯示得分動畫
+                showPointsAnimation(points, relativeX, relativeY);
+                
+                // 標記圓圈為被擊中
+                circle.classList.add('hit');
+                
+                // 從圓圈列表中移除
+                const index = circles.indexOf(circle);
+                if (index > -1) {
+                    circles.splice(index, 1);
+                }
+                
+                // 延遲後移除圓圈元素
+                setTimeout(() => {
+                    if (circle.parentNode) {
+                        circle.remove();
+                    }
+                }, 500);
+            } else {
+                // 未命中會中斷連擊
+                resetCombo();
+            }
+            
+            // 更新UI
+            updateStats();
+        }
+        
+        // 顯示射擊效果
+        function showShotEffect() {
+            shotEffect.classList.add('active');
+            setTimeout(() => {
+                shotEffect.classList.remove('active');
+            }, 100);
+        }
+        
+        // 顯示得分動畫
+        function showPointsAnimation(points, x, y) {
+            const pointsElement = document.createElement('div');
+            pointsElement.className = 'points-animation';
+            pointsElement.textContent = (points > 0 ? '+' : '') + points;
+            pointsElement.style.left = x + 'px';
+            pointsElement.style.top = y + 'px';
+            pointsElement.style.color = points > 0 ? 
+                (points >= 25 ? '#f59e0b' : '#0ea5e9') : '#ef4444';
+            
+            gameArea.appendChild(pointsElement);
+            
+            setTimeout(() => {
+                if (pointsElement.parentNode) {
+                    pointsElement.remove();
+                }
+            }, 1000);
+        }
+        
+        // 更新圓圈位置
+        function updateCircles() {
+            if (!gameActive) return;
+            
+            for (let i = 0; i < circles.length; i++) {
+                const circle = circles[i];
+                let x = parseFloat(circle.style.left);
+                let y = parseFloat(circle.style.top);
+                
+                // 獲取圓圈大小
+                const circleSize = circle.classList.contains('circle-small') ? 60 :
+                                 circle.classList.contains('circle-medium') ? 80 : 100;
+                
+                // 更新位置
+                x += circle.dx;
+                y += circle.dy;
+                
+                // 邊界檢查
+                const gameRect = gameArea.getBoundingClientRect();
+                const maxX = gameRect.width - circleSize;
+                const maxY = gameRect.height - circleSize;
+                
+                if (x < 0) {
+                    x = 0;
+                    circle.dx = Math.abs(circle.dx);
+                } else if (x > maxX) {
+                    x = maxX;
+                    circle.dx = -Math.abs(circle.dx);
+                }
+                
+                if (y < 0) {
+                    y = 0;
+                    circle.dy = Math.abs(circle.dy);
+                } else if (y > maxY) {
+                    y = maxY;
+                    circle.dy = -Math.abs(circle.dy);
+                }
+                
+                // 應用新位置
+                circle.style.left = x + 'px';
+                circle.style.top = y + 'px';
+            }
+            
+            requestAnimationFrame(updateCircles);
+        }
+        
+        // 重置連擊
+        function resetCombo() {
+            combo = 0;
+        }
+        
+        // 更新遊戲統計
+        function updateStats() {
+            scoreElement.textContent = score;
+            comboElement.textContent = combo;
+            
+            // 計算命中率
+            const accuracy = shotsFired > 0 ? Math.round((shotsHit / shotsFired) * 100) : 100;
+            accuracyElement.textContent = accuracy + '%';
+        }
+        
+        // 遊戲計時器
+        function startGameTimer() {
+            timeLeft = 60;
+            timeElement.textContent = timeLeft;
+            
+            gameTimer = setInterval(() => {
+                timeLeft--;
+                timeElement.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+        
+        // 開始生成圓圈
+        function startCircleGeneration() {
+            // 清除現有圓圈
+            circles.forEach(circle => {
+                if (circle.parentNode) circle.remove();
+            });
+            circles = [];
+            
+            // 開始生成新圓圈
+            circleTimer = setInterval(() => {
+                createCircle();
+            }, 600);
+        }
+        
+        // 開始遊戲
+        function startGame() {
+            if (gameActive) return;
+            
+            // 重置遊戲狀態
+            score = 0;
+            shotsFired = 0;
+            shotsHit = 0;
+            combo = 0;
+            maxCombo = 0;
+            gameActive = true;
+            
+            // 更新UI
+            updateStats();
+            
+            // 隱藏遊戲結束畫面
+            gameOverScreen.style.display = 'none';
+            
+            // 開始計時器和圓圈生成
+            startGameTimer();
+            startCircleGeneration();
+            
+            // 開始更新圓圈位置
+            updateCircles();
+            
+            // 更新按鈕文本
+            startButton.textContent = '遊戲進行中';
+            startButton.disabled = true;
+        }
+        
+        // 暫停遊戲
+        function pauseGame() {
+            if (!gameActive) return;
+            
+            gameActive = !gameActive;
+            
+            if (!gameActive) {
+                clearInterval(gameTimer);
+                clearInterval(circleTimer);
+                pauseButton.textContent = '繼續';
+                startButton.textContent = '繼續遊戲';
+                startButton.disabled = false;
+            } else {
+                startGameTimer();
+                startCircleGeneration();
+                updateCircles();
+                pauseButton.textContent = '暫停';
+                startButton.textContent = '遊戲進行中';
+                startButton.disabled = true;
+            }
+        }
+        
+        // 結束遊戲
+        function endGame() {
+            gameActive = false;
+            
+            // 清除計時器
+            clearInterval(gameTimer);
+            clearInterval(circleTimer);
+            
+            // 移除所有圓圈
+            circles.forEach(circle => {
+                if (circle.parentNode) circle.remove();
+            });
+            circles = [];
+            
+            // 顯示遊戲結束畫面
+            finalScoreElement.textContent = score;
+            gameOverScreen.style.display = 'flex';
+            
+            // 重置按鈕
+            startButton.textContent = '開始遊戲';
+            startButton.disabled = false;
+            pauseButton.textContent = '暫停';
+            
+            // 顯示最終統計
+            console.log(`遊戲結束！最終分數: ${score}, 最高連擊: ${maxCombo}, 命中率: ${accuracyElement.textContent}`);
+        }
+        
+        // 重新開始遊戲
+        function restartGame() {
+            endGame();
+            setTimeout(startGame, 100);
+        }
+        
+        // 初始化遊戲
+        function initGame() {
+            // 事件監聽器
+            startButton.addEventListener('click', startGame);
+            pauseButton.addEventListener('click', pauseGame);
+            restartButton.addEventListener('click', restartGame);
+            playAgainButton.addEventListener('click', restartGame);
+            
+            // 滑鼠移動顯示準心
+            document.addEventListener('mousemove', (e) => {
+                if (gameActive) {
+                    const gameRect = gameArea.getBoundingClientRect();
+                    const x = e.clientX - gameRect.left;
+                    const y = e.clientY - gameRect.top;
+                    
+                    // 確保準心在遊戲區域內
+                    if (x >= 0 && x <= gameRect.width && y >= 0 && y <= gameRect.height) {
+                        showCrosshair(x, y);
+                    } else {
+                        hideCrosshair();
+                    }
+                }
+            });
+            
+            // 滑鼠離開遊戲區域隱藏準心
+            gameArea.addEventListener('mouseleave', () => {
+                hideCrosshair();
+            });
+            
+            // 點擊遊戲區域（未命中圓圈）
+            gameArea.addEventListener('click', (e) => {
+                if (!gameActive || e.target !== gameArea) return;
+                
+                shotsFired++;
+                showShotEffect();
+                resetCombo();
+                updateStats();
+            });
+            
+            // 初始顯示準心在中心
+            const gameRect = gameArea.getBoundingClientRect();
+            showCrosshair(gameRect.width / 2, gameRect.height / 2);
+            
+            console.log("圓圈交叉小遊戲已初始化！點擊「開始遊戲」按鈕開始遊玩。");
+        }
+        
+        // 當頁面加載完成時初始化遊戲
+        window.addEventListener('load', initGame);
+    </script>
+</body>
+</html>
