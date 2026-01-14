@@ -1,39 +1,369 @@
-<div class="grid-container" id="grid-container">
-                    <!-- 4x4網格 -->
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div> 
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div> 
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
-                    <div class="grid-cell"></div>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048遊戲</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .title {
+            font-size: 50px;
+            font-weight: bold;
+            color: #eee;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .scores-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .score-container, .best-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .score-title, .best-title {
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .score-value, .best-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .instructions {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .restart-button {
+            background: #8f7a66;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .restart-button:hover {
+            background: #9c8a7a;
+            transform: scale(1.05);
+        }
+        
+        .game-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+        
+        .grid-container {
+            position: absolute;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .grid-cell {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+        
+        .tile-container {
+            position: absolute;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+        }
+        
+        .tile {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            z-index: 10;
+        }
+        
+        /* 方塊顏色 */
+        .tile-2 {
+            background: #2A9D8F;
+            color: #fff;
+        }
+        
+        .tile-4 {
+            background: #E9C46A;
+            color: #fff;
+        }
+        
+        .tile-8 {
+            background: #F4A261;
+            color: #fff;
+        }
+        
+        .tile-16 {
+            background: #E76F51;
+            color: #fff;
+        }
+        
+        .tile-32 {
+            background: #264653;
+            color: #fff;
+        }
+        
+        .tile-64 {
+            background: #2A9D8F;
+            color: #fff;
+        }
+        
+        .tile-128 {
+            background: #E9C46A;
+            color: #fff;
+            font-size: 30px;
+        }
+        
+        .tile-256 {
+            background: #F4A261;
+            color: #fff;
+            font-size: 30px;
+        }
+        
+        .tile-512 {
+            background: #E76F51;
+            color: #fff;
+            font-size: 30px;
+        }
+        
+        .tile-1024 {
+            background: #264653;
+            color: #fff;
+            font-size: 25px;
+        }
+        
+        .tile-2048 {
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            color: #fff;
+            font-size: 25px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .game-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .game-message p {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .game-message button {
+            background: #8f7a66;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .game-message button:hover {
+            background: #9c8a7a;
+            transform: scale(1.05);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .key {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 520px) {
+            .title {
+                font-size: 40px;
+            }
+            
+            .game-container {
+                height: 400px;
+            }
+            
+            .tile {
+                font-size: 25px;
+            }
+            
+            .tile-128, .tile-256, .tile-512 {
+                font-size: 20px;
+            }
+            
+            .tile-1024, .tile-2048 {
+                font-size: 18px;
+            }
+            
+            .key {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">2048</div>
+            <div class="scores-container">
+                <div class="score-container">
+                    <div class="score-title">分數</div>
+                    <div class="score-value" id="score">0</div>
                 </div>
-                <div class="tile-container" id="tile-container">
-                    <!-- 方塊將在這裡生成 -->
+                <div class="best-container">
+                    <div class="best-title">最高分</div>
+                    <div class="best-value" id="best-score">0</div>
                 </div>
-                
-                <!-- 遊戲結束/勝利訊息 -->
-                <div class="game-message" id="game-message">
-                    <p id="message-text"></p>
-                    <button id="message-button">再玩一次</button>
-                </div>
+            </div>
+        </div>
+        
+        <div class="game-info">
+            <div class="instructions">
+                使用方向鍵或WASD移動方塊<br>
+                相同數字的方塊碰撞時會合併！
+            </div>
+            <button class="restart-button" id="restart-button">新遊戲</button>
+        </div>
+        
+        <div class="game-container">
+            <div class="grid-container" id="grid-container">
+                <!-- 4x4網格 -->
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+                <div class="grid-cell"></div>
+            </div>
+            <div class="tile-container" id="tile-container">
+                <!-- 方塊將在這裡生成 -->
             </div>
             
-            <div class="controls">
-                <div class="key">↑</div>
-                <div class="key">↓</div>
-                <div class="key">←</div>
-                <div class="key">→</div>
+            <!-- 遊戲結束/勝利訊息 -->
+            <div class="game-message" id="game-message">
+                <p id="message-text"></p>
+                <button id="message-button">再玩一次</button>
             </div>
+        </div>
+        
+        <div class="controls">
+            <div class="key">↑</div>
+            <div class="key">↓</div>
+            <div class="key">←</div>
+            <div class="key">→</div>
         </div>
         
         <footer>
@@ -50,39 +380,19 @@
             // 遊戲狀態變數
             let grid = [];
             let score = 0;
+            let bestScore = localStorage.getItem('2048-best-score') || 0;
             let gameOver = false;
             let won = false;
             
             // DOM元素
             const gridContainer = document.getElementById('grid-container');
             const tileContainer = document.getElementById('tile-container');
-            const scoreElement = document.querySelector('.score');
+            const scoreElement = document.getElementById('score');
+            const bestScoreElement = document.getElementById('best-score');
             const gameMessage = document.getElementById('game-message');
             const messageText = document.getElementById('message-text');
             const messageButton = document.getElementById('message-button');
             const restartButton = document.getElementById('restart-button');
-            
-            // 計算方塊大小和位置
-            function getTilePosition(index) {
-                const gridRect = gridContainer.getBoundingClientRect();
-                const cellSize = gridRect.width / GRID_SIZE;
-                const gap = 10; // 網格間距
-                
-                const row = Math.floor(index / GRID_SIZE);
-                const col = index % GRID_SIZE;
-                
-                // 計算實際像素位置
-                const left = col * cellSize + gap / 2;
-                const top = row * cellSize + gap / 2;
-                const size = cellSize - gap;
-                
-                return { 
-                    left: `${(left / gridRect.width) * 100}%`,
-                    top: `${(top / gridRect.height) * 100}%`,
-                    width: `${(size / gridRect.width) * 100}%`,
-                    height: `${(size / gridRect.height) * 100}%`
-                };
-            }
             
             // 初始化遊戲
             function initGame() {
@@ -109,6 +419,9 @@
                 
                 // 渲染網格
                 renderTiles();
+                
+                // 更新最高分顯示
+                bestScoreElement.textContent = bestScore;
             }
             
             // 在隨機空位置添加一個方塊
@@ -133,6 +446,8 @@
                 
                 // 在網格中設置值
                 grid[cellIndex] = value;
+                
+                return cellIndex;
             }
             
             // 渲染所有方塊
@@ -154,14 +469,19 @@
                 tile.classList.add('tile', `tile-${value}`);
                 tile.textContent = value;
                 
-                // 計算位置和大小
-                const position = getTilePosition(index);
+                // 計算位置（網格中的行和列）
+                const row = Math.floor(index / GRID_SIZE);
+                const col = index % GRID_SIZE;
                 
-                // 設置位置和大小
-                tile.style.left = position.left;
-                tile.style.top = position.top;
-                tile.style.width = position.width;
-                tile.style.height = position.height;
+                // 計算百分比位置
+                const left = (col * 25) + 12.5; // 25%每格，12.5%為間距補償
+                const top = (row * 25) + 12.5;
+                
+                // 設置位置
+                tile.style.left = `${left}%`;
+                tile.style.top = `${top}%`;
+                tile.style.width = `20%`;
+                tile.style.height = `20%`;
                 
                 // 添加到方塊容器
                 tileContainer.appendChild(tile);
@@ -170,6 +490,13 @@
             // 更新分數顯示
             function updateScore() {
                 scoreElement.textContent = score;
+                
+                // 更新最高分
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestScoreElement.textContent = bestScore;
+                    localStorage.setItem('2048-best-score', bestScore);
+                }
             }
             
             // 移動方塊
@@ -203,25 +530,25 @@
                     addRandomTile();
                     renderTiles();
                     checkGameState();
+                    updateScore();
                 }
             }
             
             // 向上移動
             function moveUp() {
                 for (let col = 0; col < GRID_SIZE; col++) {
-                    const column = [];
-                    
-                    // 提取列數據
+                    // 提取當前列
+                    let column = [];
                     for (let row = 0; row < GRID_SIZE; row++) {
                         column.push(grid[row * GRID_SIZE + col]);
                     }
                     
                     // 合併列
-                    const mergedColumn = mergeLine(column);
+                    column = mergeLine(column);
                     
                     // 將合併後的列放回網格
                     for (let row = 0; row < GRID_SIZE; row++) {
-                        grid[row * GRID_SIZE + col] = mergedColumn[row];
+                        grid[row * GRID_SIZE + col] = column[row];
                     }
                 }
             }
@@ -229,19 +556,18 @@
             // 向下移動
             function moveDown() {
                 for (let col = 0; col < GRID_SIZE; col++) {
-                    const column = [];
-                    
-                    // 提取列數據（從下到上）
+                    // 提取當前列（反轉以便從底部開始）
+                    let column = [];
                     for (let row = GRID_SIZE - 1; row >= 0; row--) {
                         column.push(grid[row * GRID_SIZE + col]);
                     }
                     
                     // 合併列
-                    const mergedColumn = mergeLine(column);
+                    column = mergeLine(column);
                     
-                    // 將合併後的列放回網格（從下到上）
+                    // 將合併後的列放回網格（反轉回來）
                     for (let row = 0; row < GRID_SIZE; row++) {
-                        grid[(GRID_SIZE - 1 - row) * GRID_SIZE + col] = mergedColumn[row];
+                        grid[(GRID_SIZE - 1 - row) * GRID_SIZE + col] = column[row];
                     }
                 }
             }
@@ -249,19 +575,18 @@
             // 向左移動
             function moveLeft() {
                 for (let row = 0; row < GRID_SIZE; row++) {
-                    const line = [];
-                    
-                    // 提取行數據
+                    // 提取當前行
+                    let line = [];
                     for (let col = 0; col < GRID_SIZE; col++) {
                         line.push(grid[row * GRID_SIZE + col]);
                     }
                     
                     // 合併行
-                    const mergedLine = mergeLine(line);
+                    line = mergeLine(line);
                     
                     // 將合併後的行放回網格
                     for (let col = 0; col < GRID_SIZE; col++) {
-                        grid[row * GRID_SIZE + col] = mergedLine[col];
+                        grid[row * GRID_SIZE + col] = line[col];
                     }
                 }
             }
@@ -269,37 +594,36 @@
             // 向右移動
             function moveRight() {
                 for (let row = 0; row < GRID_SIZE; row++) {
-                    const line = [];
-                    
-                    // 提取行數據（從右到左）
+                    // 提取當前行（反轉以便從右側開始）
+                    let line = [];
                     for (let col = GRID_SIZE - 1; col >= 0; col--) {
                         line.push(grid[row * GRID_SIZE + col]);
                     }
                     
                     // 合併行
-                    const mergedLine = mergeLine(line);
+                    line = mergeLine(line);
                     
-                    // 將合併後的行放回網格（從右到左）
+                    // 將合併後的行放回網格（反轉回來）
                     for (let col = 0; col < GRID_SIZE; col++) {
-                        grid[row * GRID_SIZE + (GRID_SIZE - 1 - col)] = mergedLine[col];
+                        grid[row * GRID_SIZE + (GRID_SIZE - 1 - col)] = line[col];
                     }
                 }
             }
             
-            // 合併一行或一列（經典2048邏輯）
+            // 合併一行或一列
             function mergeLine(line) {
                 // 移除零值
-                let filteredLine = line.filter(val => val !== 0);
+                let filtered = line.filter(val => val !== 0);
                 
                 // 合併相鄰的相同值
-                for (let i = 0; i < filteredLine.length - 1; i++) {
-                    if (filteredLine[i] === filteredLine[i + 1]) {
-                        filteredLine[i] *= 2;
-                        score += filteredLine[i]; // 增加分數
-                        filteredLine.splice(i + 1, 1);
+                for (let i = 0; i < filtered.length - 1; i++) {
+                    if (filtered[i] === filtered[i + 1]) {
+                        filtered[i] *= 2;
+                        score += filtered[i]; // 增加分數
+                        filtered.splice(i + 1, 1);
                         
                         // 檢查是否達到2048
-                        if (filteredLine[i] === 2048 && !won) {
+                        if (filtered[i] === 2048 && !won) {
                             won = true;
                             showMessage('恭喜！你達到了2048！', false);
                         }
@@ -307,11 +631,11 @@
                 }
                 
                 // 用零填充剩餘位置
-                while (filteredLine.length < GRID_SIZE) {
-                    filteredLine.push(0);
+                while (filtered.length < GRID_SIZE) {
+                    filtered.push(0);
                 }
                 
-                return filteredLine;
+                return filtered;
             }
             
             // 檢查遊戲狀態
@@ -359,7 +683,7 @@
             // 顯示遊戲訊息
             function showMessage(text, isGameOver) {
                 messageText.textContent = text;
-                messageButton.textContent = isGameOver ? '重新開始' : '繼續遊戲';
+                messageButton.textContent = isGameOver ? '再玩一次' : '繼續遊戲';
                 gameMessage.style.display = 'flex';
             }
             
@@ -409,55 +733,11 @@
                 }
             });
             
-            // 觸摸滑動手勢支持
-            let touchStartX, touchStartY;
-            
-            gridContainer.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-            }, { passive: false });
-            
-            gridContainer.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                if (!touchStartX || !touchStartY) return;
-                
-                const touchEndX = e.changedTouches[0].clientX;
-                const touchEndY = e.changedTouches[0].clientY;
-                
-                const dx = touchEndX - touchStartX;
-                const dy = touchEndY - touchStartY;
-                
-                // 確定滑動方向
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    // 水平滑動
-                    if (dx > 0) {
-                        move('right');
-                    } else {
-                        move('left');
-                    }
-                } else {
-                    // 垂直滑動
-                    if (dy > 0) {
-                        move('down');
-                    } else {
-                        move('up');
-                    }
-                }
-                
-                // 重置觸摸起點
-                touchStartX = null;
-                touchStartY = null;
-            }, { passive: false });
-            
-            // 視窗大小改變時重新計算位置
-            window.addEventListener('resize', () => {
-                renderTiles();
-            });
-            
             // 初始化遊戲
             initGame();
+            
+            console.log('2048遊戲已載入完成！使用方向鍵或WASD移動方塊。');
         });
     </script>
 </body>
-Z
+</html>
