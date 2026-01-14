@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2048遊戲</title>
+    <title>2048 經典版</title>
     <style>
         * {
             margin: 0;
@@ -13,8 +13,8 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
+            background: #faf8ef;
+            color: #776e65;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -26,7 +26,6 @@
         .container {
             max-width: 500px;
             width: 100%;
-            margin: 0 auto;
         }
         
         .header {
@@ -34,14 +33,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            width: 100%;
         }
         
         .title {
-            font-size: 50px;
+            font-size: 60px;
             font-weight: bold;
-            color: #eee;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #776e65;
         }
         
         .scores-container {
@@ -50,16 +47,17 @@
         }
         
         .score-container, .best-container {
-            background: rgba(255, 255, 255, 0.1);
+            background: #bbada0;
             padding: 10px 15px;
             border-radius: 6px;
             text-align: center;
             min-width: 80px;
+            color: white;
         }
         
         .score-title, .best-title {
             font-size: 12px;
-            color: #aaa;
+            color: #eee4da;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -67,7 +65,7 @@
         .score-value, .best-value {
             font-size: 20px;
             font-weight: bold;
-            color: #fff;
+            color: white;
         }
         
         .game-info {
@@ -78,14 +76,14 @@
         }
         
         .instructions {
-            color: #aaa;
-            font-size: 14px;
+            color: #776e65;
+            font-size: 15px;
             line-height: 1.4;
         }
         
         .restart-button {
             background: #8f7a66;
-            color: white;
+            color: #f9f6f2;
             border: none;
             padding: 12px 25px;
             border-radius: 6px;
@@ -96,25 +94,25 @@
         }
         
         .restart-button:hover {
-            background: #9c8a7a;
-            transform: scale(1.05);
+            background: #9f8a76;
         }
         
         .game-container {
             position: relative;
             width: 100%;
-            height: 500px;
+            padding-bottom: 100%; /* 保持正方形 */
+            background: #bbada0;
+            border-radius: 10px;
             margin-bottom: 20px;
         }
         
         .grid-container {
             position: absolute;
-            z-index: 1;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            background: transparent;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(4, 1fr);
@@ -122,20 +120,25 @@
         }
         
         .grid-cell {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(238, 228, 218, 0.35);
             border-radius: 6px;
         }
         
         .tile-container {
             position: absolute;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
-            padding: 15px;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 15px;
+            pointer-events: none;
         }
         
         .tile {
-            position: absolute;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -144,68 +147,68 @@
             border-radius: 6px;
             transition: all 0.15s ease;
             z-index: 10;
+            color: #776e65;
         }
         
-        /* 方塊顏色 */
+        /* 2048 經典顏色 */
         .tile-2 {
-            background: #2A9D8F;
-            color: #fff;
+            background: #eee4da;
+            color: #776e65;
         }
         
         .tile-4 {
-            background: #E9C46A;
-            color: #fff;
+            background: #ede0c8;
+            color: #776e65;
         }
         
         .tile-8 {
-            background: #F4A261;
-            color: #fff;
+            background: #f2b179;
+            color: #f9f6f2;
         }
         
         .tile-16 {
-            background: #E76F51;
-            color: #fff;
+            background: #f59563;
+            color: #f9f6f2;
         }
         
         .tile-32 {
-            background: #264653;
-            color: #fff;
+            background: #f67c5f;
+            color: #f9f6f2;
         }
         
         .tile-64 {
-            background: #2A9D8F;
-            color: #fff;
+            background: #f65e3b;
+            color: #f9f6f2;
         }
         
         .tile-128 {
-            background: #E9C46A;
-            color: #fff;
+            background: #edcf72;
+            color: #f9f6f2;
             font-size: 30px;
         }
         
         .tile-256 {
-            background: #F4A261;
-            color: #fff;
+            background: #edcc61;
+            color: #f9f6f2;
             font-size: 30px;
         }
         
         .tile-512 {
-            background: #E76F51;
-            color: #fff;
+            background: #edc850;
+            color: #f9f6f2;
             font-size: 30px;
         }
         
         .tile-1024 {
-            background: #264653;
-            color: #fff;
+            background: #edc53f;
+            color: #f9f6f2;
             font-size: 25px;
         }
         
         .tile-2048 {
-            background: linear-gradient(135deg, #ffd700, #ffa500);
-            color: #fff;
+            background: #edc22e;
+            color: #f9f6f2;
             font-size: 25px;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
         
         .game-message {
@@ -214,7 +217,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(238, 228, 218, 0.73);
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -228,12 +231,12 @@
             font-size: 36px;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #fff;
+            color: #776e65;
         }
         
         .game-message button {
             background: #8f7a66;
-            color: white;
+            color: #f9f6f2;
             border: none;
             padding: 15px 30px;
             border-radius: 6px;
@@ -244,44 +247,19 @@
         }
         
         .game-message button:hover {
-            background: #9c8a7a;
-            transform: scale(1.05);
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .key {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
+            background: #9f8a76;
         }
         
         footer {
             margin-top: 30px;
             text-align: center;
-            color: #aaa;
+            color: #776e65;
             font-size: 14px;
         }
         
         @media (max-width: 520px) {
             .title {
-                font-size: 40px;
-            }
-            
-            .game-container {
-                height: 400px;
+                font-size: 45px;
             }
             
             .tile {
@@ -296,10 +274,17 @@
                 font-size: 18px;
             }
             
-            .key {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
+            .game-container {
+                width: 100%;
+                padding-bottom: 100%;
+            }
+            
+            .grid-container, .tile-container {
+                gap: 10px;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
             }
         }
     </style>
@@ -359,15 +344,8 @@
             </div>
         </div>
         
-        <div class="controls">
-            <div class="key">↑</div>
-            <div class="key">↓</div>
-            <div class="key">←</div>
-            <div class="key">→</div>
-        </div>
-        
         <footer>
-            <p>使用方向鍵或WASD移動方塊 | 黑色主題2048遊戲</p>
+            <p>使用方向鍵或WASD移動方塊 | 經典2048遊戲</p>
         </footer>
     </div>
 
@@ -469,21 +447,7 @@
                 tile.classList.add('tile', `tile-${value}`);
                 tile.textContent = value;
                 
-                // 計算位置（網格中的行和列）
-                const row = Math.floor(index / GRID_SIZE);
-                const col = index % GRID_SIZE;
-                
-                // 計算百分比位置
-                const left = (col * 25) + 12.5; // 25%每格，12.5%為間距補償
-                const top = (row * 25) + 12.5;
-                
-                // 設置位置
-                tile.style.left = `${left}%`;
-                tile.style.top = `${top}%`;
-                tile.style.width = `20%`;
-                tile.style.height = `20%`;
-                
-                // 添加到方塊容器
+                // 添加到對應的網格位置
                 tileContainer.appendChild(tile);
             }
             
@@ -733,10 +697,54 @@
                 }
             });
             
+            // 觸控滑動手勢支援（行動裝置）
+            let touchStartX, touchStartY;
+            
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', (e) => {
+                if (!touchStartX || !touchStartY || gameOver && !won) return;
+                
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                const dx = touchEndX - touchStartX;
+                const dy = touchEndY - touchStartY;
+                const minSwipeDistance = 30;
+                
+                // 確定滑動方向
+                if (Math.abs(dx) > Math.abs(dy)) {
+                    // 水平滑動
+                    if (Math.abs(dx) > minSwipeDistance) {
+                        if (dx > 0) {
+                            move('right');
+                        } else {
+                            move('left');
+                        }
+                    }
+                } else {
+                    // 垂直滑動
+                    if (Math.abs(dy) > minSwipeDistance) {
+                        if (dy > 0) {
+                            move('down');
+                        } else {
+                            move('up');
+                        }
+                    }
+                }
+                
+                // 重置觸摸起點
+                touchStartX = null;
+                touchStartY = null;
+            }, { passive: true });
+            
             // 初始化遊戲
             initGame();
             
-            console.log('2048遊戲已載入完成！使用方向鍵或WASD移動方塊。');
+            console.log('2048經典版遊戲已載入完成！使用方向鍵或WASD移動方塊。');
         });
     </script>
 </body>
