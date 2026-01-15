@@ -33,37 +33,45 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            /* 確保在小螢幕上標題和分數區可以換行或調整，這裡採用緊湊排列 */
+            flex-wrap: wrap; 
+            gap: 10px;
         }
         
         .title {
             font-size: 60px;
             font-weight: bold;
             color: #776e65;
+            line-height: 1;
         }
         
         .scores-container {
             display: flex;
-            gap: 10px;
+            gap: 5px; /* 縮小間隙以容納三個框 */
         }
         
-        .score-container, .best-container {
+        .score-container, .best-container, .max-tile-container {
             background: #bbada0;
-            padding: 10px 15px;
+            padding: 8px 12px; /* 調整內距 */
             border-radius: 6px;
             text-align: center;
-            min-width: 80px;
+            min-width: 70px; /* 縮小最小寬度 */
             color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
-        .score-title, .best-title {
-            font-size: 12px;
+        .score-title, .best-title, .max-tile-title {
+            font-size: 11px; /* 稍微縮小標題字體 */
             color: #eee4da;
             text-transform: uppercase;
             letter-spacing: 1px;
+            line-height: 1.2;
         }
         
-        .score-value, .best-value {
-            font-size: 20px;
+        .score-value, .best-value, .max-tile-value {
+            font-size: 18px; /* 稍微縮小數值字體 */
             font-weight: bold;
             color: white;
         }
@@ -210,6 +218,12 @@
             color: #f9f6f2;
             font-size: 25px;
         }
+
+        /* 更高層級顏色 (以防玩到很大) */
+        .tile-super {
+            background: #3c3a32;
+            color: #f9f6f2;
+        }
         
         .game-message {
             position: absolute;
@@ -259,7 +273,25 @@
         
         @media (max-width: 520px) {
             .title {
-                font-size: 45px;
+                font-size: 40px; /* 手機版標題縮小 */
+            }
+            
+            .header {
+                flex-direction: row; 
+                justify-content: space-between;
+            }
+            
+            .score-container, .best-container, .max-tile-container {
+                padding: 5px 8px;
+                min-width: 55px;
+            }
+
+            .score-title, .best-title, .max-tile-title {
+                font-size: 9px;
+            }
+            
+            .score-value, .best-value, .max-tile-value {
+                font-size: 14px;
             }
             
             .tile {
@@ -301,6 +333,11 @@
                 <div class="best-container">
                     <div class="best-title">最高分</div>
                     <div class="best-value" id="best-score">0</div>
+                </div>
+                <!-- 新增：最高合成分 -->
+                <div class="max-tile-container">
+                    <div class="max-tile-title">最高合成分</div>
+                    <div class="max-tile-value" id="max-tile-score">2</div>
                 </div>
             </div>
         </div>
@@ -358,7 +395,10 @@
             // 遊戲狀態變數
             let grid = [];
             let score = 0;
-            let bestScore = localStorage.getItem('2048-best-score') || 0;
+            let bestScore = parseInt(localStorage.getItem('2048-best-score')) || 0;
+            // 新增：歷史最高合成分（從 LocalStorage 讀取，預設為 2）
+            let maxTileRecord = parseInt(localStorage.getItem('2048-max-tile-record')) || 2;
+            
             let gameOver = false;
             let won = false;
             
@@ -367,6 +407,7 @@
             const tileContainer = document.getElementById('tile-container');
             const scoreElement = document.getElementById('score');
             const bestScoreElement = document.getElementById('best-score');
+            const maxTileElement = document.getElementById('max-tile-score'); // 新增 DOM
             const gameMessage = document.getElementById('game-message');
             const messageText = document.getElementById('message-text');
             const messageButton = document.getElementById('message-button');
@@ -384,6 +425,7 @@
                 
                 // 更新分數顯示
                 updateScore();
+                updateMaxTileDisplay(); // 初始化顯示最高合成分
                 
                 // 隱藏遊戲訊息
                 gameMessage.style.display = 'none';
@@ -397,9 +439,6 @@
                 
                 // 渲染網格
                 renderTiles();
-                
-                // 更新最高分顯示
-                bestScoreElement.textContent = bestScore;
             }
             
             // 在隨機空位置添加一個方塊
@@ -424,6 +463,9 @@
                 
                 // 在網格中設置值
                 grid[cellIndex] = value;
+
+                // 初始添加的方塊也要檢查是否打破紀錄（雖然通常只是2或4，但為了邏輯完整）
+                checkMaxTile(value);
                 
                 return cellIndex;
             }
@@ -444,7 +486,14 @@
             // 創建一個方塊元素
             function createTile(index, value) {
                 const tile = document.createElement('div');
-                tile.classList.add('tile', `tile-${value}`);
+                
+                // 處理超大數字的樣式
+                let tileClass = `tile-${value}`;
+                if (value > 2048) {
+                    tileClass = 'tile-super';
+                }
+                
+                tile.classList.add('tile', tileClass);
                 tile.textContent = value;
                 
                 // 計算網格位置
@@ -469,6 +518,20 @@
                     bestScoreElement.textContent = bestScore;
                     localStorage.setItem('2048-best-score', bestScore);
                 }
+            }
+
+            // 新增：檢查並更新最高合成分
+            function checkMaxTile(value) {
+                if (value > maxTileRecord) {
+                    maxTileRecord = value;
+                    localStorage.setItem('2048-max-tile-record', maxTileRecord);
+                    updateMaxTileDisplay();
+                }
+            }
+
+            // 新增：更新最高合成分顯示
+            function updateMaxTileDisplay() {
+                maxTileElement.textContent = maxTileRecord;
             }
             
             // 移動方塊
@@ -522,7 +585,7 @@
                 }
             }
             
-            // 向下移動 - 修復版本
+            // 向下移動
             function moveDown() {
                 for (let col = 0; col < GRID_SIZE; col++) {
                     let column = [];
@@ -570,7 +633,7 @@
                 }
             }
             
-            // 合併一行或一列 - 修復版本
+            // 合併一行或一列
             function mergeLine(line) {
                 // 移除零值
                 let filtered = [];
@@ -585,6 +648,10 @@
                     if (filtered[i] === filtered[i + 1]) {
                         filtered[i] = filtered[i] * 2;
                         score += filtered[i]; // 增加分數
+                        
+                        // 新增：檢查這次合併是否創造了新的最高合成分
+                        checkMaxTile(filtered[i]);
+                        
                         filtered.splice(i + 1, 1);
                         
                         // 檢查是否達到2048
@@ -654,7 +721,7 @@
             
             // 鍵盤事件監聽
             document.addEventListener('keydown', (e) => {
-                // [新增功能] 處理 Enter 鍵
+                // 處理 Enter 鍵
                 if (e.key === 'Enter') {
                     // 當訊息視窗顯示時
                     if (gameMessage.style.display === 'flex') {
@@ -667,11 +734,10 @@
                             // 如果是遊戲結束（輸了），按 Enter 重新開始
                             initGame();
                         }
-                        return; // 處理完 Enter 後直接返回，不執行後續的移動邏輯
+                        return; // 處理完 Enter 後直接返回
                     }
                 }
                 
-                console.log("按鍵按下:", e.key);
                 if (gameOver && !won) return;
                 
                 switch(e.key) {
@@ -763,7 +829,7 @@
             // 初始化遊戲
             initGame();
             
-            console.log('2048經典版遊戲已載入完成！使用方向鍵或WASD移動方塊。');
+            console.log('2048經典版遊戲已載入完成！包含 Enter 鍵重新開始與最高合成分功能。');
         });
     </script>
 </body>
