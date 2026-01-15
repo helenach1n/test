@@ -508,7 +508,6 @@
             
             // 向上移動
             function moveUp() {
-                console.log("向上移動");
                 for (let col = 0; col < GRID_SIZE; col++) {
                     let column = [];
                     for (let row = 0; row < GRID_SIZE; row++) {
@@ -525,7 +524,6 @@
             
             // 向下移動 - 修復版本
             function moveDown() {
-                console.log("向下移動");
                 for (let col = 0; col < GRID_SIZE; col++) {
                     let column = [];
                     for (let row = GRID_SIZE - 1; row >= 0; row--) {
@@ -542,7 +540,6 @@
             
             // 向左移動
             function moveLeft() {
-                console.log("向左移動");
                 for (let row = 0; row < GRID_SIZE; row++) {
                     let line = [];
                     for (let col = 0; col < GRID_SIZE; col++) {
@@ -559,7 +556,6 @@
             
             // 向右移動
             function moveRight() {
-                console.log("向右移動");
                 for (let row = 0; row < GRID_SIZE; row++) {
                     let line = [];
                     for (let col = GRID_SIZE - 1; col >= 0; col--) {
@@ -576,8 +572,6 @@
             
             // 合併一行或一列 - 修復版本
             function mergeLine(line) {
-                console.log("合併前:", line);
-                
                 // 移除零值
                 let filtered = [];
                 for (let i = 0; i < line.length; i++) {
@@ -585,8 +579,6 @@
                         filtered.push(line[i]);
                     }
                 }
-                
-                console.log("過濾後:", filtered);
                 
                 // 合併相鄰的相同值
                 for (let i = 0; i < filtered.length - 1; i++) {
@@ -603,14 +595,11 @@
                     }
                 }
                 
-                console.log("合併後:", filtered);
-                
                 // 用零填充剩餘位置
                 while (filtered.length < GRID_SIZE) {
                     filtered.push(0);
                 }
                 
-                console.log("填充後:", filtered);
                 return filtered;
             }
             
@@ -665,6 +654,23 @@
             
             // 鍵盤事件監聽
             document.addEventListener('keydown', (e) => {
+                // [新增功能] 處理 Enter 鍵
+                if (e.key === 'Enter') {
+                    // 當訊息視窗顯示時
+                    if (gameMessage.style.display === 'flex') {
+                        e.preventDefault(); // 防止預設行為
+                        
+                        if (won && !gameOver) {
+                            // 如果是贏了但遊戲還沒結束（達到2048），按 Enter 繼續遊戲
+                            gameMessage.style.display = 'none';
+                        } else {
+                            // 如果是遊戲結束（輸了），按 Enter 重新開始
+                            initGame();
+                        }
+                        return; // 處理完 Enter 後直接返回，不執行後續的移動邏輯
+                    }
+                }
+                
                 console.log("按鍵按下:", e.key);
                 if (gameOver && !won) return;
                 
