@@ -34,6 +34,12 @@
             --text-secondary-dark: #b8e0b8;
             --shadow-color: rgba(0, 0, 0, 0.2);
             --transition-speed: 0.3s;
+            
+            /* 預設變數（深色模式） */
+            --background-color: var(--background-dark);
+            --card-color: var(--card-dark);
+            --text-color: var(--text-dark);
+            --text-secondary-color: var(--text-secondary-dark);
         }
         
         /* 深色模式變數覆蓋 */
@@ -421,6 +427,46 @@
             background: rgba(0, 0, 0, 0.2);
         }
         
+        /* 載入動畫效果 */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-spinner.active {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(108, 43, 238, 0.3);
+            border-top: 8px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 30px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        
         /* 響應式設計 */
         @media (max-width: 1024px) {
             .games-container {
@@ -504,51 +550,6 @@
                 gap: 15px;
             }
         }
-        
-        /* 載入動畫效果 */
-        .loading-spinner {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .loading-spinner.active {
-            display: flex;
-        }
-        
-        .spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(108, 43, 238, 0.3);
-            border-top: 8px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 30px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .loading-text {
-            color: white;
-            font-size: 1.5rem;
-            text-align: center;
-        }
-        
-        /* 主題切換動畫 */
-        .theme-transition {
-            transition: background-color 0.5s ease, color 0.5s ease;
-        }
     </style>
 </head>
 <body class="dark-mode">
@@ -569,3 +570,447 @@
         <div class="header">
             <div class="title-container">
                 <div class="game-icon-large pulse-soft">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">
+                        sports_esports
+                    </span>
+                </div>
+                <h1>🎮 Helena's Game Center 🎮</h1>
+                <div class="subtitle">
+                    歡迎來到統一遊戲平台！選擇您喜歡的遊戲開始遊玩<br>
+                    整合等待畫面設計，提供更美觀的遊戲體驗
+                </div>
+            </div>
+            
+            <div class="nav-bar">
+                <button class="nav-btn" id="homeBtn">
+                    <span class="material-symbols-outlined">home</span>
+                    首頁
+                </button>
+                <button class="nav-btn settings" id="settingsBtn">
+                    <span class="material-symbols-outlined">settings</span>
+                    遊戲設置
+                </button>
+                <button class="nav-btn about" id="aboutBtn">
+                    <span class="material-symbols-outlined">info</span>
+                    關於
+                </button>
+                <button class="nav-btn" id="themeToggleBtn">
+                    <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
+                    切換主題
+                </button>
+            </div>
+        </div>
+        
+        <div class="games-container">
+            <!-- 遊戲1: 2048 -->
+            <a href="game1.html" class="game-card" id="game1-card" data-game="2048">
+                <div class="game-icon">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">
+                        grid_4x4
+                    </span>
+                </div>
+                <div class="game-title">2048 經典版</div>
+                <div class="game-description">
+                    經典的數字合併遊戲！使用方向鍵或WASD移動方塊，相同數字的方塊碰撞時會合併，目標是達到2048！
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <div>最高分</div>
+                        <div class="stat-value" id="game1-highscore">0</div>
+                    </div>
+                    <div class="game-stat">
+                        <div>最高合成分</div>
+                        <div class="stat-value" id="game1-maxtile">2</div>
+                    </div>
+                    <div class="game-stat">
+                        <div>遊玩次數</div>
+                        <div class="stat-value" id="game1-plays">0</div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- 遊戲2: 3D 森林打獵 -->
+            <a href="game2.html" class="game-card" id="game2-card" data-game="hunting3d">
+                <div class="game-icon">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">
+                        forest
+                    </span>
+                </div>
+                <div class="game-title">3D 森林打獵</div>
+                <div class="game-description">
+                    沉浸式 3D 打獵體驗！在廣闊森林中尋找並射擊動物，使用滑鼠瞄準，考驗你的反應力與準確度。
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <div>最高分</div>
+                        <div class="stat-value" id="game2-highscore">0</div>
+                    </div>
+                    <div class="game-stat">
+                        <div>最高生命</div>
+                        <div class="stat-value" id="game2-maxlevel">3</div>
+                    </div>
+                    <div class="game-stat">
+                        <div>擊中數</div>
+                        <div class="stat-value" id="game2-accuracy">0</div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- 遊戲3: AR手部打地鼠 -->
+            <a href="game3.html" class="game-card" id="game3-card" data-game="mole">
+                <div class="game-icon">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">
+                        touch_app
+                    </span>
+                </div>
+                <div class="game-title">AR手部打地鼠</div>
+                <div class="game-description">
+                    使用手部追蹤技術！伸出手指對準鏡頭，用食指打地鼠。需要相機權限和良好的光線環境。
+                </div>
+                <div class="game-stats">
+                    <div class="game-stat">
+                        <div>最高分</div>
+                        <div class="stat-value" id="game3-highscore">0</div>
+                    </div>
+                    <div class="game-stat">
+                        <div>最高生命</div>
+                        <div class="stat-value" id="game3-maxlives">3</div>
+                    </div>
+                    <div class="game-stat">
+                        <div>擊中數</div>
+                        <div class="stat-value" id="game3-hits">0</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- 設置面板 -->
+        <div class="settings-panel" id="settingsPanel">
+            <h2 class="settings-title">
+                <span class="material-symbols-outlined">settings</span>
+                遊戲設置
+            </h2>
+            
+            <div class="setting-item">
+                <label class="setting-label">
+                    <span class="material-symbols-outlined">volume_up</span>
+                    音效音量
+                </label>
+                <input type="range" class="setting-control" id="soundVolume" min="0" max="100" value="80">
+                <div style="text-align: right; color: #87CEEB; font-size: 0.9rem;">
+                    <span id="soundValue">80%</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">
+                    <span class="material-symbols-outlined">music_note</span>
+                    背景音樂
+                </label>
+                <input type="range" class="setting-control" id="musicVolume" min="0" max="100" value="60">
+                <div style="text-align: right; color: #87CEEB; font-size: 0.9rem;">
+                    <span id="musicValue">60%</span>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <label class="setting-label">
+                    <span class="material-symbols-outlined">gamepad</span>
+                    遊戲控制
+                </label>
+                <select class="setting-control" id="controlScheme">
+                    <option value="keyboard">鍵盤控制</option>
+                    <option value="touch">觸控控制</option>
+                    <option value="both">鍵盤+觸控</option>
+                </select>
+            </div>
+            
+            <div class="setting-item">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="vibration" checked>
+                    <label class="setting-label" for="vibration">
+                        <span class="material-symbols-outlined">vibration</span>
+                        震動回饋 (行動裝置)
+                    </label>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="animations" checked>
+                    <label class="setting-label" for="animations">
+                        <span class="material-symbols-outlined">animation</span>
+                        動畫效果
+                    </label>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="darkModeToggle">
+                    <label class="setting-label" for="darkModeToggle">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                        深色模式
+                    </label>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+                <button class="nav-btn" id="saveSettings">
+                    <span class="material-symbols-outlined">save</span>
+                    保存設置
+                </button>
+                <button class="nav-btn settings" id="resetSettings">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                    恢復預設
+                </button>
+                <button class="nav-btn about" id="closeSettings">
+                    <span class="material-symbols-outlined">close</span>
+                    關閉
+                </button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 Helena's Game Center | 統一遊戲平台 v2.0</p>
+            <p>整合等待畫面設計，提供更美觀的遊戲體驗</p>
+            <p>所有遊戲均使用原生HTML5/CSS3/JavaScript開發，無需安裝任何外掛程式</p>
+            <p>建議使用最新版本的Chrome、Firefox或Safari瀏覽器以獲得最佳體驗</p>
+        </div>
+    </div>
+
+    <script>
+        // 遊戲設置管理類
+        class GameSettings {
+            constructor() {
+                this.settings = {
+                    soundVolume: 80,
+                    musicVolume: 60,
+                    controlScheme: 'keyboard',
+                    vibration: true,
+                    animations: true,
+                    darkMode: true  // 預設為深色模式
+                };
+                this.loadSettings();
+                this.initEventListeners();
+                this.updateGameStats();
+                this.applyTheme();
+            }
+            
+            loadSettings() {
+                const saved = localStorage.getItem('game-settings');
+                if (saved) {
+                    this.settings = { ...this.settings, ...JSON.parse(saved) };
+                }
+                this.applySettings();
+            }
+            
+            saveSettings() {
+                // 從UI獲取當前值
+                this.settings.soundVolume = parseInt(document.getElementById('soundVolume').value);
+                this.settings.musicVolume = parseInt(document.getElementById('musicVolume').value);
+                this.settings.controlScheme = document.getElementById('controlScheme').value;
+                this.settings.vibration = document.getElementById('vibration').checked;
+                this.settings.animations = document.getElementById('animations').checked;
+                this.settings.darkMode = document.getElementById('darkModeToggle').checked;
+                
+                localStorage.setItem('game-settings', JSON.stringify(this.settings));
+                this.applySettings();
+                this.applyTheme();
+                this.showNotification('設置已保存！');
+            }
+            
+            applySettings() {
+                // 更新UI控制項
+                document.getElementById('soundVolume').value = this.settings.soundVolume;
+                document.getElementById('musicVolume').value = this.settings.musicVolume;
+                document.getElementById('controlScheme').value = this.settings.controlScheme;
+                document.getElementById('vibration').checked = this.settings.vibration;
+                document.getElementById('animations').checked = this.settings.animations;
+                document.getElementById('darkModeToggle').checked = this.settings.darkMode;
+                
+                // 更新顯示值
+                document.getElementById('soundValue').textContent = this.settings.soundVolume + '%';
+                document.getElementById('musicValue').textContent = this.settings.musicVolume + '%';
+            }
+            
+            applyTheme() {
+                const body = document.body;
+                const themeIcon = document.getElementById('themeIcon');
+                
+                if (this.settings.darkMode) {
+                    body.classList.remove('light-mode');
+                    body.classList.add('dark-mode');
+                    themeIcon.textContent = 'dark_mode';
+                } else {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    themeIcon.textContent = 'light_mode';
+                }
+            }
+            
+            toggleTheme() {
+                this.settings.darkMode = !this.settings.darkMode;
+                // 更新複選框狀態以保持UI同步
+                document.getElementById('darkModeToggle').checked = this.settings.darkMode;
+                this.applyTheme();
+                this.saveSettings();
+            }
+            
+            resetSettings() {
+                this.settings = {
+                    soundVolume: 80,
+                    musicVolume: 60,
+                    controlScheme: 'keyboard',
+                    vibration: true,
+                    animations: true,
+                    darkMode: true
+                };
+                this.applySettings();
+                this.applyTheme();
+                this.showNotification('設置已恢復為預設值！');
+            }
+            
+            showNotification(message) {
+                // 創建通知元素
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--primary-color);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    z-index: 10000;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    animation: slideIn 0.3s ease-out;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                
+                // 3秒後移除
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+            
+            initEventListeners() {
+                // 音量滑桿事件
+                document.getElementById('soundVolume').addEventListener('input', (e) => {
+                    document.getElementById('soundValue').textContent = e.target.value + '%';
+                });
+                
+                document.getElementById('musicVolume').addEventListener('input', (e) => {
+                    document.getElementById('musicValue').textContent = e.target.value + '%';
+                });
+                
+                // 按鈕事件
+                document.getElementById('settingsBtn').addEventListener('click', () => {
+                    document.getElementById('settingsPanel').classList.add('active');
+                });
+                
+                document.getElementById('closeSettings').addEventListener('click', () => {
+                    document.getElementById('settingsPanel').classList.remove('active');
+                });
+                
+                document.getElementById('saveSettings').addEventListener('click', () => {
+                    this.saveSettings();
+                });
+                
+                document.getElementById('resetSettings').addEventListener('click', () => {
+                    this.resetSettings();
+                });
+                
+                document.getElementById('themeToggleBtn').addEventListener('click', () => {
+                    this.toggleTheme();
+                });
+                
+                document.getElementById('aboutBtn').addEventListener('click', () => {
+                    this.showNotification('Helena\'s Game Center v2.0\n\n整合等待畫面設計\n\n© 2026 Helena.C');
+                });
+                
+                // 遊戲卡片點擊事件 - 顯示載入動畫
+                document.querySelectorAll('.game-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const gameName = card.dataset.game;
+                        this.showLoading(gameName);
+                    });
+                });
+            }
+            
+            showLoading(gameName) {
+                const loadingSpinner = document.getElementById('loadingSpinner');
+                const loadingText = loadingSpinner.querySelector('.loading-text');
+                
+                // 更新載入文字
+                const gameTitles = {
+                    '2048': '2048 經典版',
+                    'shooting': '森林打獵射擊',
+                    'mole': 'AR手部打地鼠'
+                };
+                
+                loadingText.textContent = `正在載入 ${gameTitles[gameName] || '遊戲'}...`;
+                loadingSpinner.classList.add('active');
+                
+                // 3秒後自動隱藏（實際應用中應該在遊戲載入完成後隱藏）
+                setTimeout(() => {
+                    loadingSpinner.classList.remove('active');
+                }, 2000);
+            }
+            
+            // 遊戲統計資料載入
+            updateGameStats() {
+                // 2048
+                const game1Highscore = localStorage.getItem('2048-best-score') || 0;
+                const game1Maxtile = localStorage.getItem('2048-max-tile-record') || 2;
+                const game1Plays = localStorage.getItem('2048-play-count') || 0;
+                
+                document.getElementById('game1-highscore').textContent = game1Highscore;
+                document.getElementById('game1-maxtile').textContent = game1Maxtile;
+                document.getElementById('game1-plays').textContent = game1Plays;
+                
+                // 森林打獵
+                const game2Highscore = localStorage.getItem('shooting-highscore') || 0;
+                const game2Maxlevel = localStorage.getItem('shooting-maxlevel') || 1;
+                const game2Accuracy = localStorage.getItem('shooting-accuracy') || '0%';
+                
+                document.getElementById('game2-highscore').textContent = game2Highscore;
+                document.getElementById('game2-maxlevel').textContent = game2Maxlevel;
+                document.getElementById('game2-accuracy').textContent = game2Accuracy;
+                
+                // AR打地鼠
+                const game3Highscore = localStorage.getItem('mole-highscore') || 0;
+                const game3Maxlives = localStorage.getItem('mole-maxlives') || 3;
+                const game3Hits = localStorage.getItem('mole-hits') || 0;
+                
+                document.getElementById('game3-highscore').textContent = game3Highscore;
+                document.getElementById('game3-maxlives').textContent = game3Maxlives;
+                document.getElementById('game3-hits').textContent = game3Hits;
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameSettings = new GameSettings();
+            
+            // 添加CSS動畫
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            console.log('Helena\'s Game Center 已成功載入！整合等待畫面設計完成。');
+        });
+    </script>
+</body>
+</html>
