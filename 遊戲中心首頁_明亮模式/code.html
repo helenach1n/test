@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Helena 的遊戲中心</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6c2bee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161022",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Spline Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nav-active .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<!-- Header Section -->
+<header class="sticky top-0 z-50 bg-background-light/80 backdrop-blur-md dark:bg-background-dark/80 px-4 py-4 flex items-center justify-between border-b border-primary/10">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full overflow-hidden border-2 border-primary/20 bg-white shadow-sm">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="Young woman smiling for profile photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP4KPqKzOtcHk0JQuitxhqkTxY9XcoZKF2TVgrfNOWZmqJr4TdCE__keMvTkm8TyZeU4aUfa4HQMGF3Uy0RckVc80AO_fx7P7oTiCQ-CAOmxqZbfdcDF88WHUyYmBsHTKMR8VNqxfzkd8EfBo0F6oM0NuC5lkKXDsUrXdoidCwj7SjOYJkoS_pvnQxelyD3HX4WsikE0MB319W9KETX0ePan48YdDGQVS1fLKzfAOovFHrBipa5nOdvgS9oegqPlTspR5c6BKIHr0O"/>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">Helena's Game Center</h1>
+<p class="text-xs font-semibold text-primary uppercase tracking-widest">FUN &amp; RELAX</p>
+</div>
+</div>
+<button class="size-10 flex items-center justify-center rounded-full hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">search</span>
+</button>
+</header>
+<main class="pb-24">
+<!-- Subtitle Section -->
+<div class="px-4 pt-6 pb-2">
+<h2 class="text-2xl font-bold tracking-tight">輕鬆與樂趣</h2>
+</div>
+<!-- Featured Banner -->
+<div class="px-4 py-3">
+<div class="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-lg group">
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10"></div>
+<img alt="Featured Game" class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105" data-alt="Retro neon arcade machines in a dark room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfes9tr_r5VWLu0ANzXhb6pZ3ztCm3QPUTH6GBHnS9DB1DWpQ7isMXkqfXft8QWSLzfke1HChM8h7DCbDDNzRcoAjBOlDG32ARGUL_goTI8kCUUIoIdBpTISX-rmt7NL-CKWkPWxqQxhXlsEO3DxivAQT6En_bT-GxHPxMAhEmjtLQcOT84kTDYGfgYiyVigpESGYEodni7s8dTIALQ5MmD9e3yEtR0v1zNKWQdN0Y3zaJEPDbHYcstjWdyc3RbWTaBlT6XTkffjZj"/>
+<div class="absolute bottom-0 left-0 p-5 z-20">
+<span class="inline-block px-2 py-1 bg-primary text-white text-[10px] font-bold rounded mb-2">精選推薦</span>
+<h3 class="text-white text-2xl font-bold">準備好挑戰了嗎？</h3>
+<p class="text-white/80 text-sm mt-1">在排行榜上留下你的名字，贏取專屬獎勵！</p><button class="mt-4 bg-white text-primary px-6 py-2 rounded-full font-bold text-sm shadow-md hover:bg-slate-50 transition-colors">查看排行榜</button>
+</div>
+</div>
+</div>
+<!-- Games List Section -->
+<div class="px-4 mt-6">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold">熱門遊戲</h2>
+<button class="text-primary text-sm font-semibold">查看全部</button>
+</div>
+<div class="grid gap-4">
+<!-- Game Card: Classic 2048 -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-lg shadow-sm border border-slate-100 dark:border-slate-800 flex items-center justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center gap-4">
+<div class="size-14 rounded-lg bg-orange-100 flex items-center justify-center text-orange-500 shadow-inner">
+<span class="material-symbols-outlined text-3xl font-bold">grid_view</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-800 dark:text-slate-100 text-lg">經典 2048</h4>
+<p class="text-xs text-slate-500">挑戰數字極限，合成 2048</p><div class="mt-2 bg-yellow-400/10 text-yellow-600 text-[10px] font-bold px-2 py-0.5 rounded inline-flex items-center gap-1"><span class="text-[12px]">🏆</span> 最高分: 12,040</div>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-full font-bold text-sm transition-colors shadow-sm"><span class="material-symbols-outlined text-sm mr-1">play_arrow</span>立即開始</button>
+</div>
+<!-- Game Card: Forest Hunt -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-lg shadow-sm border border-slate-100 dark:border-slate-800 flex items-center justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center gap-4">
+<div class="size-14 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 shadow-inner">
+<span class="material-symbols-outlined text-3xl">forest</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-800 dark:text-slate-100 text-lg">森林狩獵</h4>
+<p class="text-xs text-slate-500">考驗反應與精準射擊體驗</p><div class="mt-2 bg-yellow-400/10 text-yellow-600 text-[10px] font-bold px-2 py-0.5 rounded inline-flex items-center gap-1"><span class="text-[12px]">🏆</span> 最高分: 850</div>
+</div>
+</div>
+<button class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-full font-bold text-sm transition-colors shadow-sm"><span class="material-symbols-outlined text-sm mr-1">play_arrow</span>立即開始</button>
+</div>
+<!-- Game Card: Space Runner (Added for variety) -->
+
+</div>
+</div>
+<!-- Weekly Mission Section -->
+
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 px-4 pb-6 pt-2 z-50">
+<div class="flex justify-around items-center max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 nav-active text-primary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold">首頁</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">trophy</span>
+<span class="text-[10px] font-bold">排行榜</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors relative" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-[10px] font-bold">通知</span>
+<span class="absolute top-0 right-1 size-2 bg-red-500 rounded-full border border-white"></span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">個人檔案</span>
+</a>
+</div>
+</nav>
+</body></html>
