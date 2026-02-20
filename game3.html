@@ -544,14 +544,15 @@
             container.innerHTML = '';
             holes = [];
             
-            // 創建地鼠洞
+            // 創建地鼠洞 - 排成一排
             for (let i = 0; i < HOLE_COUNT; i++) {
                 const hole = document.createElement('div');
                 hole.className = 'hole';
                 
-                // 隨機位置（避免太靠近邊緣）
-                const x = 10 + Math.random() * 80; // 10-90%
-                const y = 20 + Math.random() * 60; // 20-80%
+                // 水平等間距排列，垂直置中
+                const spacing = 100 / (HOLE_COUNT + 1); // 間距百分比
+                const x = spacing * (i + 1); // 從左到右均勻分佈
+                const y = 50; // 垂直置中
                 
                 hole.style.left = `${x}%`;
                 hole.style.top = `${y}%`;
