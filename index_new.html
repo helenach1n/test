@@ -34,6 +34,12 @@
             --text-secondary-dark: #b8e0b8;
             --shadow-color: rgba(0, 0, 0, 0.2);
             --transition-speed: 0.3s;
+            
+            /* 預設變數（深色模式） */
+            --background-color: var(--background-dark);
+            --card-color: var(--card-dark);
+            --text-color: var(--text-dark);
+            --text-secondary-color: var(--text-secondary-dark);
         }
         
         /* 深色模式變數覆蓋 */
@@ -845,6 +851,8 @@
             
             toggleTheme() {
                 this.settings.darkMode = !this.settings.darkMode;
+                // 更新複選框狀態以保持UI同步
+                document.getElementById('darkModeToggle').checked = this.settings.darkMode;
                 this.applyTheme();
                 this.saveSettings();
             }
