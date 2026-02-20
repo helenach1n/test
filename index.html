@@ -505,5 +505,32 @@
                     this.resetSettings();
                 });
                 
-                document.getElementById('aboutBtn').addEventListener('click', () => {
-                    alert('我的遊戲館 v1.)
+                                document.getElementById('aboutBtn').addEventListener('click', () => {
+                                    alert('我的遊戲館 v1.0\n\n統一遊戲平台\n\n© 2026 Helena.C\n\n所有遊戲均使用原生HTML5/CSS3/JavaScript開發，無需安裝任何外掛程式');
+                                });
+                            }
+                
+                            // 遊戲統計資料載入
+                            updateGameStats() {
+                                // 2048
+                                document.getElementById('game1-highscore').textContent = localStorage.getItem('game1-highscore') || 0;
+                                document.getElementById('game1-maxtile').textContent = localStorage.getItem('game1-maxtile') || 2;
+                                document.getElementById('game1-plays').textContent = localStorage.getItem('game1-plays') || 0;
+                                // 森林打獵
+                                document.getElementById('game2-highscore').textContent = localStorage.getItem('game2-highscore') || 0;
+                                document.getElementById('game2-maxlevel').textContent = localStorage.getItem('game2-maxlevel') || 1;
+                                document.getElementById('game2-accuracy').textContent = localStorage.getItem('game2-accuracy') || '0%';
+                                // AR打地鼠
+                                document.getElementById('game3-highscore').textContent = localStorage.getItem('game3-highscore') || 0;
+                                document.getElementById('game3-maxlives').textContent = localStorage.getItem('game3-maxlives') || 3;
+                                document.getElementById('game3-hits').textContent = localStorage.getItem('game3-hits') || 0;
+                            }
+                        }
+                
+                        // 初始化
+                        document.addEventListener('DOMContentLoaded', () => {
+                            new GameSettings();
+                        });
+                    </script>
+                </body>
+                </html>

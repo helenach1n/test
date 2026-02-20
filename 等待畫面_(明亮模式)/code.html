@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Helena's Game Center - Loading</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6c2bee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161022",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .gradient-blur {
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+        .loader-spin {
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .pulse-soft {
+            animation: pulse-custom 3s ease-in-out infinite;
+        }
+        @keyframes pulse-custom {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen relative overflow-hidden flex flex-col items-center justify-center">
+<!-- Background Ethereal Gradients -->
+<div class="absolute top-0 left-0 w-72 h-72 bg-primary rounded-full gradient-blur -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-400 rounded-full gradient-blur translate-x-1/4 translate-y-1/4"></div>
+<div class="absolute top-1/2 right-0 w-64 h-64 bg-purple-300 rounded-full gradient-blur translate-x-1/2"></div>
+<!-- Main Content Container -->
+<div class="relative z-10 flex flex-col items-center max-w-md px-6 text-center">
+<!-- Central Brand Cluster -->
+<div class="mb-12 flex flex-col items-center">
+<!-- Icon -->
+<div class="w-32 h-32 mb-8 bg-primary/10 rounded-xl flex items-center justify-center pulse-soft">
+<span class="material-symbols-outlined text-primary !text-[80px]" style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;">
+                    sports_esports
+                </span>
+</div>
+<!-- Title & Slogan -->
+<h1 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-2">
+                Helena's <span class="text-primary">Game</span> Center
+            </h1>
+<p class="text-primary font-semibold tracking-[0.2em] text-sm uppercase opacity-80">
+                FUN &amp; RELAX
+            </p>
+</div>
+<!-- Loading Component -->
+<div class="flex flex-col items-center gap-6 w-full max-w-[280px]">
+<!-- Circular Progress -->
+<div class="relative w-12 h-12">
+<div class="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+<div class="absolute inset-0 border-4 border-primary loader-spin rounded-full"></div>
+</div>
+<!-- Status Text -->
+<div class="space-y-3 w-full">
+<p class="text-slate-600 dark:text-slate-400 font-medium text-lg">
+                    正在進入遊戲...
+                </p>
+<!-- Progress Bar Style from Component List adapted -->
+<div class="w-full bg-primary/10 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%] rounded-full shadow-[0_0_10px_rgba(108,43,238,0.3)]"></div>
+</div>
+<div class="flex justify-between items-center text-xs font-semibold text-slate-400 uppercase tracking-widest">
+<span>Loading Assets</span>
+<span>45%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Decoration -->
+<div class="absolute bottom-8 left-0 right-0 text-center px-4">
+<div class="flex items-center justify-center gap-4 text-slate-400/50">
+<span class="h-px w-8 bg-slate-300"></span>
+<span class="text-[10px] uppercase tracking-tighter">Premium Gaming Experience</span>
+<span class="h-px w-8 bg-slate-300"></span>
+</div>
+</div>
+<!-- Hidden Hero Placeholder for component reference consistency -->
+<div class="hidden">
+<div class="w-full bg-center bg-no-repeat bg-cover" data-alt="Retro gaming consoles and purple neon lights setup" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBa2rQxqyRRdqdHlHdNyLT3hczim8vcszlD674bj35ub1e2nMucKas92X1eBd8ywTDI0DZNP6eIW54qLKiK4AbOWkA7grwWMcjMaTGPlfdYoOrTNDe2_E-HuXNeZNfy7_Vy4O38uafasAStyeNzii48t5T-adtzpExyoKeJhFeefsXvXZLoN-AVoGuRUax0-yCkhceE3BbKJUxervgfMhiDKO4LGN7Q98YnWbXdYBLsyxoWCrEsb1X8jlnTmj7-_4t8LEUH-thhsNHM");'>
+</div>
+</div>
+</body></html>
