@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,13 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     
     <!-- Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -196,78 +203,81 @@
     
     <!-- JavaScript -->
     <script>
-        // 模式切換功能
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const themeText = document.getElementById('theme-text');
-        
-        // 檢查本地存儲的主題偏好
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            document.documentElement.classList.remove('dark');
-            updateThemeUI('light');
-        } else if (savedTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-            updateThemeUI('dark');
-        } else {
-            // 默認使用系統偏好
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // 等待DOM完全加載
+        document.addEventListener('DOMContentLoaded', function() {
+            // 模式切換功能
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            // 檢查本地存儲的主題偏好
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                updateThemeUI('light');
+            } else if (savedTheme === 'dark') {
                 document.documentElement.classList.add('dark');
                 updateThemeUI('dark');
             } else {
-                document.documentElement.classList.remove('dark');
-                updateThemeUI('light');
+                // 默認使用系統偏好
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                    updateThemeUI('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    updateThemeUI('light');
+                }
             }
-        }
-        
-        // 更新UI顯示
-        function updateThemeUI(theme) {
-            if (theme === 'dark') {
-                themeIcon.textContent = 'light_mode';
-                themeText.textContent = '明亮模式';
-            } else {
-                themeIcon.textContent = 'dark_mode';
-                themeText.textContent = '黑暗模式';
+            
+            // 更新UI顯示
+            function updateThemeUI(theme) {
+                if (theme === 'dark') {
+                    themeIcon.textContent = 'light_mode';
+                    themeText.textContent = '明亮模式';
+                } else {
+                    themeIcon.textContent = 'dark_mode';
+                    themeText.textContent = '黑暗模式';
+                }
             }
-        }
-        
-        // 切換主題
-        themeToggle.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            if (isDark) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                updateThemeUI('light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                updateThemeUI('dark');
-            }
-        });
-        
-        // 遊戲卡片點擊效果
-        document.querySelectorAll('.game-card a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                // 添加點擊反饋
-                e.currentTarget.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    e.currentTarget.style.transform = '';
-                }, 200);
-            });
-        });
-        
-        // 歡迎按鈕功能
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.textContent.includes('排行榜')) {
-                    alert('排行榜功能即將推出！');
-                } else if (this.textContent.includes('遊戲指南')) {
-                    alert('遊戲指南：\n1. 2048: 使用方向鍵移動方塊\n2. 森林打獵: 使用滑鼠瞄準射擊\n3. AR打地鼠: 使用手部追蹤');
+            
+            // 切換主題
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    updateThemeUI('light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    updateThemeUI('dark');
                 }
             });
+            
+            // 遊戲卡片點擊效果
+            document.querySelectorAll('a[href^="game"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // 添加點擊反饋
+                    e.currentTarget.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        e.currentTarget.style.transform = '';
+                    }, 200);
+                });
+            });
+            
+            // 歡迎按鈕功能
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.textContent.includes('排行榜')) {
+                        alert('排行榜功能即將推出！');
+                    } else if (this.textContent.includes('遊戲指南')) {
+                        alert('遊戲指南：\n1. 2048: 使用方向鍵移動方塊\n2. 森林打獵: 使用滑鼠瞄準射擊\n3. AR打地鼠: 使用手部追蹤');
+                    }
+                });
+            });
+            
+            console.log('遊戲中心主頁已載入完成！');
         });
-        
-        console.log('遊戲中心主頁已載入完成！');
     </script>
 </body>
 </html>

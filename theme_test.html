@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主題切換測試</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .test-box { padding: 20px; margin: 10px; border-radius: 10px; }
+        .light-bg { background-color: #f3f4f6; color: #111827; }
+        .dark-bg { background-color: #1f2937; color: #f9fafb; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
+    <h1 class="text-2xl font-bold mb-6">主題切換功能測試</h1>
+    
+    <div class="mb-8">
+        <button id="theme-toggle" class="px-4 py-2 bg-blue-500 text-white rounded-lg">
+            切換主題
+        </button>
+        <span id="theme-status" class="ml-4">當前主題: 黑暗模式</span>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="test-box bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
+            <h2 class="text-xl font-bold mb-4">測試區塊 1</h2>
+            <p>這是一個測試區塊，用於驗證主題切換效果。</p>
+            <p class="mt-2 text-gray-600 dark:text-gray-400">淺色模式文字為灰色，深色模式文字為淺灰色。</p>
+        </div>
+        
+        <div class="test-box bg-gray-100 dark:bg-gray-700 p-6 rounded-xl shadow">
+            <h2 class="text-xl font-bold mb-4">測試區塊 2</h2>
+            <p>另一個測試區塊，展示不同的背景顏色。</p>
+            <p class="mt-2 text-gray-600 dark:text-gray-400">觀察顏色變化以確認主題切換是否正常。</p>
+        </div>
+    </div>
+    
+    <div class="mt-8 p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
+        <h3 class="font-bold mb-2">測試說明：</h3>
+        <ol class="list-decimal pl-5 space-y-1">
+            <li>點擊"切換主題"按鈕</li>
+            <li>觀察頁面顏色變化</li>
+            <li>檢查狀態文字是否更新</li>
+            <li>重新整理頁面，主題應保持不變</li>
+        </ol>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeStatus = document.getElementById('theme-status');
+            
+            // 檢查本地存儲
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                updateStatus('light');
+            } else if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                updateStatus('dark');
+            }
+            
+            function updateStatus(theme) {
+                themeStatus.textContent = `當前主題: ${theme === 'dark' ? '黑暗模式' : '明亮模式'}`;
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    updateStatus('light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    updateStatus('dark');
+                }
+            });
+            
+            console.log('主題測試頁面已載入');
+        });
+    </script>
+</body>
+</html>
