@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="zh-Hant"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Helena's Game Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b6cee",
+                        "primary-dark": "#1a4bb0",
+                        "accent-blue": "#1e3a5f",
+                        "accent-gold": "#ffd700",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px"},
+                    backgroundImage: {
+                        'cyber-grid': "radial-gradient(circle at 50% 50%, rgba(43, 108, 238, 0.15) 0%, transparent 50%), linear-gradient(0deg, transparent 24%, rgba(43, 108, 238, 0.05) 25%, rgba(43, 108, 238, 0.05) 26%, transparent 27%, transparent 74%, rgba(43, 108, 238, 0.05) 75%, rgba(43, 108, 238, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(43, 108, 238, 0.05) 25%, rgba(43, 108, 238, 0.05) 26%, transparent 27%, transparent 74%, rgba(43, 108, 238, 0.05) 75%, rgba(43, 108, 238, 0.05) 76%, transparent 77%, transparent)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101622;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2b6cee;
+            border-radius: 4px;
+        }
+        
+        .glass-panel {
+            background: rgba(30, 58, 95, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gold-glow {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(43, 108, 238, 0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-display min-h-screen antialiased overflow-hidden selection:bg-primary selection:text-white">
+<!-- Decorative Background Elements -->
+<div class="fixed inset-0 z-0 pointer-events-none">
+<div class="absolute inset-0 bg-cyber-grid bg-[length:50px_50px]"></div>
+<div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-primary/10 to-transparent"></div>
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-0 left-0 w-64 h-64 bg-accent-gold/5 rounded-full blur-[80px]"></div>
+</div>
+<!-- Main Container simulating a phone screen -->
+<div class="relative z-10 w-full h-screen flex flex-col max-w-md mx-auto bg-transparent shadow-2xl overflow-hidden">
+<!-- Header -->
+<header class="pt-12 pb-4 px-6 flex justify-between items-center z-20 sticky top-0 bg-background-dark/80 backdrop-blur-md border-b border-white/5">
+<div>
+<h1 class="text-xl font-bold text-white tracking-wide">Helena's <span class="text-primary neon-text-glow">Game Center</span></h1>
+<p class="text-xs text-slate-400 font-medium tracking-wider uppercase mt-1">Fun &amp; Relax • 樂趣與放鬆</p>
+</div>
+<button class="p-2 rounded-full bg-slate-800/50 hover:bg-slate-700/50 text-accent-gold transition-colors border border-white/5">
+<span class="material-icons text-xl">dark_mode</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto px-6 py-6 pb-24 space-y-8">
+<!-- Hero/Welcome Section -->
+<section class="relative rounded-2xl overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-accent-blue to-primary opacity-90"></div>
+<img alt="Neon lit gaming arcade with retro vibes" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-50 group-hover:scale-105 transition-transform duration-700" data-alt="Neon lit gaming arcade with retro vibes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgjPHEK6AFUvqWmk2ZP38pDwHHRUzN6oGnKR22IAMGa7P69GFBITu4XMOwIp3gMCS-DoOz8J4yNHFvWeEIGF2L3_x4V2eDIlS-bNKGS93pXdEnbo_GpwMlP6YtlUp4Vv-WRy7MXYh3dK5Wtdo5iOJcVTmTfO4dUvWLsKVClzxdlppZyeNkVA5bfnVYR-F0Ja8BP0ZOvgggJKe5k3i4UcZBh4zXmDu4ME_5YlbONMc1-nBagyiELSXcL6Mx_YtgkiVkzx00JqTwuoSL"/>
+<div class="relative p-6 text-white">
+<div class="flex items-center space-x-2 mb-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-accent-gold text-black uppercase tracking-wider">Featured</span>
+</div>
+<h2 class="text-2xl font-bold mb-2">準備好挑戰了嗎？</h2>
+<p class="text-sm text-slate-200 mb-4 max-w-[80%]">在排行榜上留下你的名字，贏取專屬獎勵！</p>
+<button class="px-4 py-2 bg-white text-primary font-bold rounded-lg text-sm hover:bg-slate-100 transition shadow-lg shadow-black/20">
+                        查看排行榜
+                    </button>
+</div>
+</section>
+<!-- Games List -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold text-white flex items-center">
+<span class="w-1 h-5 bg-primary rounded-full mr-2"></span>
+                        熱門遊戲
+                    </h3>
+<span class="text-xs text-primary cursor-pointer hover:text-primary-dark">查看全部</span>
+</div>
+<!-- Game Card 1: 2048 -->
+<div class="glass-panel rounded-xl p-4 flex flex-col gap-4 group hover:bg-accent-blue/50 transition-all duration-300 relative overflow-hidden border-l-4 border-l-primary/0 hover:border-l-primary">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+<div class="flex items-start justify-between z-10">
+<div class="flex gap-4">
+<div class="w-16 h-16 rounded-lg bg-gradient-to-br from-orange-400 to-yellow-600 flex items-center justify-center shadow-lg shadow-orange-500/20 text-white shrink-0">
+<span class="material-icons text-3xl">grid_4x4</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-white">經典 2048</h4>
+<p class="text-xs text-slate-400 mb-2">挑戰數字極限，合成 2048</p>
+<div class="inline-flex items-center px-2 py-1 rounded-md bg-black/40 border border-white/5">
+<span class="material-icons text-accent-gold text-[12px] mr-1">emoji_events</span>
+<span class="text-[10px] text-accent-gold font-mono tracking-wider">最高分: 12,040</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-3 mt-1 bg-primary hover:bg-primary-dark active:scale-[0.98] transition-all rounded-lg text-white font-bold text-sm shadow-lg shadow-primary/25 flex items-center justify-center gap-2 group-hover:shadow-primary/40">
+<span class="material-icons text-sm">play_arrow</span>
+                        立即開始
+                    </button>
+</div>
+<!-- Game Card 2: Forest Hunting -->
+<div class="glass-panel rounded-xl p-4 flex flex-col gap-4 group hover:bg-accent-blue/50 transition-all duration-300 relative overflow-hidden border-l-4 border-l-primary/0 hover:border-l-green-500">
+<div class="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+<div class="flex items-start justify-between z-10">
+<div class="flex gap-4">
+<div class="w-16 h-16 rounded-lg bg-gradient-to-br from-green-600 to-emerald-800 flex items-center justify-center shadow-lg shadow-green-500/20 text-white shrink-0">
+<span class="material-icons text-3xl">my_location</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-white">森林狩獵</h4>
+<p class="text-xs text-slate-400 mb-2">考驗反應與精準射擊體驗</p>
+<div class="inline-flex items-center px-2 py-1 rounded-md bg-black/40 border border-white/5">
+<span class="material-icons text-accent-gold text-[12px] mr-1">emoji_events</span>
+<span class="text-[10px] text-accent-gold font-mono tracking-wider">最高分: 850</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-3 mt-1 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 active:scale-[0.98] transition-all rounded-lg text-white font-bold text-sm shadow-lg shadow-green-500/25 flex items-center justify-center gap-2">
+<span class="material-icons text-sm">play_arrow</span>
+                        立即開始
+                    </button>
+</div>
+<!-- Game Card 3: AR Whack-a-Mole -->
+<div class="glass-panel rounded-xl p-4 flex flex-col gap-4 group hover:bg-accent-blue/50 transition-all duration-300 relative overflow-hidden border-l-4 border-l-primary/0 hover:border-l-purple-500">
+<div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+<div class="flex items-start justify-between z-10">
+<div class="flex gap-4">
+<div class="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-600 to-indigo-800 flex items-center justify-center shadow-lg shadow-purple-500/20 text-white shrink-0 relative">
+<span class="absolute top-1 right-1 flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-gold opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-accent-gold"></span>
+</span>
+<span class="material-icons text-3xl">back_hand</span>
+</div>
+<div>
+<h4 class="text-lg font-bold text-white flex items-center gap-2">
+                                    AR 打地鼠 
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-accent-gold border border-accent-gold/30">AR</span>
+</h4>
+<p class="text-xs text-slate-400 mb-2">虛實結合的互動樂趣</p>
+<div class="inline-flex items-center px-2 py-1 rounded-md bg-black/40 border border-white/5">
+<span class="material-icons text-accent-gold text-[12px] mr-1">emoji_events</span>
+<span class="text-[10px] text-accent-gold font-mono tracking-wider">最高分: 42</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-3 mt-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 active:scale-[0.98] transition-all rounded-lg text-white font-bold text-sm shadow-lg shadow-purple-500/25 flex items-center justify-center gap-2">
+<span class="material-icons text-sm">play_arrow</span>
+                        立即開始
+                    </button>
+</div>
+<!-- Coming Soon Teaser -->
+<div class="border border-dashed border-slate-700 rounded-xl p-4 flex items-center justify-center text-slate-500 bg-black/20">
+<span class="text-sm font-medium">更多遊戲即將推出...</span>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="absolute bottom-0 left-0 w-full bg-background-dark/90 backdrop-blur-xl border-t border-white/5 px-6 py-4 z-30">
+<ul class="flex justify-between items-center">
+<li>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-icons">home</span>
+<span class="text-[10px] font-medium">首頁</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors" href="#">
+<span class="material-icons">leaderboard</span>
+<span class="text-[10px] font-medium">排行榜</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors" href="#">
+<div class="relative">
+<span class="material-icons">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-background-dark"></span>
+</div>
+<span class="text-[10px] font-medium">通知</span>
+</a>
+</li>
+<li>
+<a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors" href="#">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-slate-600">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Ezih2HX0YTUl_NmabMBpd6_JJ8eHd8hddrTw1HgKHH2ZeP_l939oqVOQu0xLoCU2wmDjjiq4XebUx6qT6jVTIitcQ9OvObURfYPwIz4Oy0g59KNIKqTdArSH7JYPO9idKmOOppidzGaJxbCm0DtzVTuKY4bmh6y_f3mTgr3xxtgpArQsNbDzfe_aoaZTXiQsmq68pjh-ycBHee9pMxPG8LEmdNG5x2JCa-O_BRjTGsGerDiHzbTotVYock-bdRdRwKAtiKFcEmqY"/>
+</div>
+<span class="text-[10px] font-medium">我的</span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</body></html>

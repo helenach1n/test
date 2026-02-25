@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helena's Game Center - 遊戲中心</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6c2bee",
+                        "primary-dark": "#4d1ca8",
+                        "accent-gold": "#FFD700",
+                        "accent-blue": "#2b6cee",
+                        "accent-green": "#10b981",
+                        "accent-purple": "#8b5cf6",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#161022",
+                        "card-light": "#ffffff",
+                        "card-dark": "#2d2d44",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.75rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'cyber-grid': "radial-gradient(circle at 50% 50%, rgba(43, 108, 238, 0.15) 0%, transparent 50%), linear-gradient(0deg, transparent 24%, rgba(43, 108, 238, 0.05) 25%, rgba(43, 108, 238, 0.05) 26%, transparent 27%, transparent 74%, rgba(43, 108, 238, 0.05) 75%, rgba(43, 108, 238, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(43, 108, 238, 0.05) 25%, rgba(43, 108, 238, 0.05) 26%, transparent 27%, transparent 74%, rgba(43, 108, 238, 0.05) 75%, rgba(43, 108, 238, 0.05) 76%, transparent 77%, transparent)",
+                        'gradient-primary': 'linear-gradient(135deg, #6c2bee 0%, #8a5cf0 100%)',
+                        'gradient-green': 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+                        'gradient-purple': 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                    }
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        /* 自定義樣式 */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Spline Sans', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* 自定義滾動條 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(108, 43, 238, 0.3);
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: rgba(108, 43, 238, 0.5);
+        }
+        
+        /* 玻璃態效果 */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dark .glass-panel {
+            background: rgba(45, 45, 68, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 霓虹文字效果 */
+        .neon-text {
+            text-shadow: 0 0 10px rgba(108, 43, 238, 0.5);
+        }
+        
+        .dark .neon-text {
+            text-shadow: 0 0 15px rgba(108, 43, 238, 0.8);
+        }
+        
+        /* 脈衝動畫 */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        /* 懸浮效果 */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark .hover-lift:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 漸變背景 */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .gradient-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+        }
+        
+        .dark .gradient-circle {
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-800 dark:bg-background-dark dark:text-slate-100 font-display min-h-screen transition-colors duration-300">
+    
+    <!-- 漸變背景 -->
+    <div class="gradient-bg">
+        <div class="gradient-circle bg-primary w-96 h-96 -top-48 -left-48"></div>
+        <div class="gradient-circle bg-accent-blue w-80 h-80 bottom-32 -right-32"></div>
+        <div class="gradient-circle bg-accent-gold w-64 h-64 top-1/2 left-1/3"></div>
+        <div class="dark:block hidden absolute inset-0 bg-cyber-grid bg-[length:50px_50px] opacity-10"></div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="container mx-auto px-4 py-6 max-w-6xl relative z-10">
+        
+        <!-- 頁首 -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 md:mb-16">
+            <div class="flex items-center gap-4 mb-6 md:mb-0">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-lg">
+                    <span class="material-symbols-outlined text-white text-3xl">sports_esports</span>
+                </div>
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent neon-text">
+                        Helena's Game Center
+                    </h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
+                        FUN & RELAX • 樂趣與放鬆
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- 模式切換按鈕 -->
+                <button id="theme-toggle" class="flex items-center gap-2 px-4 py-2 rounded-full glass-panel hover-lift">
+                    <span id="theme-icon" class="material-symbols-outlined">dark_mode</span>
+                    <span id="theme-text" class="text-sm font-medium">黑暗模式</span>
+                </button>
+                
+                <!-- 用戶頭像 -->
+                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/30 shadow-md">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP4KPqKzOtcHk0JQuitxhqkTxY9XcoZKF2TVgrfNOWZmqJr4TdCE__keMvTkm8TyZeU4aUfa4HQMGF3Uy0RckVc80AO_fx7P7oTiCQ-CAOmxqZbfdcDF88WHUyYmBsHTKMR8VNqxfzkd8EfBo0F6oM0NuC5lkKXDsUrXdoidCwj7SjOYJkoS_pvnQxelyD3HX4WsikE0MB319W9KETX0ePan48YdDGQVS1fLKzfAOovFHrBipa5nOdvgS9oegqPlTspR5c6BKIHr0O" 
+                         alt="Helena" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </header>
+        
+        <!-- 歡迎區 -->
+        <section class="mb-12">
+            <div class="rounded-2xl overflow-hidden relative group">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/90 to-accent-blue/90 dark:from-primary/80 dark:to-accent-blue/80 z-10"></div>
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgjPHEK6AFUvqWmk2ZP38pDwHHRUzN6oGnKR22IAMGa7P69GFBITu4XMOwIp3gMCS-DoOz8J4yNHFvWeEIGF2L3_x4V2eDIlS-bNKGS93pXdEnbo_GpwMlP6YtlUp4Vv-WRy7MXYh3dK5Wtdo5iOJcVTmTfO4dUvWLsKVClzxdlppZyeNkVA5bfnVYR-F0Ja8BP0ZOvgggJKe5k3i4UcZBh4zXmDu4ME_5YlbONMc1-nBagyiELSXcL6Mx_YtgkiVkzx00JqTwuoSL" 
+                     alt="遊戲中心背景" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+                    <div class="inline-flex items-center gap-2 mb-4">
+                        <span class="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-xs font-bold">精選推薦</span>
+                        <span class="px-3 py-1 bg-accent-gold/20 backdrop-blur-sm rounded-full text-accent-gold text-xs font-bold">熱門遊戲</span>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">準備好挑戰了嗎？</h2>
+                    <p class="text-white/90 mb-6 max-w-2xl">在排行榜上留下你的名字，贏取專屬獎勵！選擇你喜歡的遊戲開始挑戰吧！</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="px-5 py-2.5 bg-white text-primary font-bold rounded-full hover:bg-slate-50 transition-colors shadow-lg">
+                            查看排行榜
+                        </button>
+                        <button class="px-5 py-2.5 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors">
+                            遊戲指南
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 遊戲區標題 -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+                <div class="w-1.5 h-8 bg-gradient-primary rounded-full"></div>
+                <h2 class="text-2xl md:text-3xl font-bold">熱門遊戲</h2>
+            </div>
+            <div class="text-sm text-primary dark:text-primary font-medium">
+                共 3 款遊戲
+            </div>
+        </div>
+        
+        <!-- 遊戲卡片區 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            
+            <!-- 遊戲 1: 2048 -->
+            <div class="glass-panel rounded-2xl p-6 hover-lift group">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center shadow-lg">
+                        <span class="material-symbols-outlined text-white text-3xl">grid_view</span>
+                    </div>
+                    <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs font-bold rounded-full">
+                        經典益智
+                    </span>
+                </div>
+                
+                <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">經典 2048</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">挑戰數字極限，合成 2048！使用方向鍵或WASD移動方塊，相同數字碰撞時會合併。</p>
+                
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-yellow-500 text-sm">star</span>
+                        <span class="text-sm font-medium">最高分: <span class="font-mono">12,040</span></span>
+                    </div>
+                    <div class="text-xs text-slate-500">⭐ 4.8/5</div>
+                </div>
+                
+                <a href="game1.html" class="block w-full py-3.5 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold rounded-xl text-center transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/25 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg">play_arrow</span>
+                    立即開始
+                </a>
+            </div>
+            
+            <!-- 遊戲 2: 森林打獵 -->
+            <div class="glass-panel rounded-2xl p-6 hover-lift group">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center shadow-lg">
+                        <span class="material-symbols-outlined text-white text-3xl">forest</span>
+                    </div>
+                    <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full">
+                        3D射擊
+                    </span>
+                </div>
+                
+                <h3 class="text-xl font-bold mb-2 group-hover:text-emerald-500 transition-colors">森林狩獵</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">考驗反應與精準射擊體驗！在森林中瞄準動物，獲得高分，挑戰你的射擊技巧。</p>
+                
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-yellow-500 text-sm">star</span>
+                        <span class="text-sm font-medium">最高分: <span class="font-mono">850</span></span>
+                    </div>
+                    <div class="text-xs text-slate-500">⭐ 4.6/5</div>
+                </div>
+                
+                <a href="game2.html" class="block w-full py-3.5 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold rounded-xl text-center transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/25 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg">play_arrow</span>
+                    立即開始
+                </a>
+            </div>
+            
+            <!-- 遊戲 3: AR打地鼠 -->
